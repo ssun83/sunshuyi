@@ -34,28 +34,28 @@ nav.navbar.navbar-default {
 }
 .header-menu {
 	padding: 10px 0;
-	color: #fff;
+	color: #2d2c28;
 }
 .navbar-default .navbar-brand {
-	color: rgba(255,255,255, .7);
+	color: rgba(160,145,130, .8);
 }
 .navbar-default .navbar-brand:hover {
-	color: #fff;
+	color: #2d2c28;
 }
 
 #main-menu ul li a {
-	color: #fff;
+	color: #2d2c28;
 	border-bottom: 2px solid transparent;
 	transition: all .4s ease;
 }
 #main-menu ul li a:hover {
-	border-bottom: 2px solid #fff;
+	border-bottom: 2px solid #2d2c28;
 }
 
 
 
 .main-top {
-	background: url("https://cdn.discordapp.com/attachments/553353974472769558/562312598520070164/tree.jpg");
+	background: url("https://cdn.discordapp.com/attachments/553353974472769558/562527225786925056/tree.jpg");
 	background-size: cover;
 	background-attachment: fixed;
 	display: table;
@@ -66,6 +66,7 @@ nav.navbar.navbar-default {
 .main-top-content {
 	display: table-cell;
 	vertical-align: middle;
+	color: #2d2c28;
 }
 .main-top-content > h2 {
 	font-size: 35px;
@@ -89,9 +90,9 @@ nav.navbar.navbar-default {
 	height: 70px;
 	width: 70px;
 	line-height: 70px;
-	border: 1px solid #fff;
+	border: 1px solid #2d2c28;
 	font-size: 27px;
-	color: #fff;
+	color: #2d2c28;
 	border-radius: 50px;
 }
 
@@ -103,7 +104,7 @@ nav.navbar.navbar-default {
 .author {
 	width: 100%;
 	height: auto;
-	border: 5px solid #FDCCC8;
+	border: 5px solid rgba(160,145,130, .8);
 	border-radius: 3px;
 }
 .author > img {
