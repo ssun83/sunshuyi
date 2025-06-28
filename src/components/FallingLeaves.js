@@ -4,6 +4,12 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 const leafImages = [
   'img/leaves/leaf1.png',
   'img/leaves/leaf2.png',
+  'img/leaves/leaf3.png',
+  'img/leaves/leaf4.png',
+  'img/leaves/leaf5.png',
+  'img/leaves/leaf6.png',
+  'img/leaves/leaf7.png',
+  'img/leaves/leaf8.png'
 ];
 
 // Custom hook to track mouse position and velocity, independent of scroll
