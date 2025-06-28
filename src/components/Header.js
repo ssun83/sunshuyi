@@ -1,8 +1,28 @@
 import React from 'react';
 import { theme, createHeaderGlassEffect, createSpringTransition } from '../theme/theme.js';
 
-const Header = ({ scrolled, scrollToSection }) => {
-  // Dynamic styles based on scroll state
+const Header = ({ navbarAnimated, scrollY, scrollToSection }) => {
+  // Calculate dynamic values based on scroll position for ebb and flow effects
+  const scrollRatio = Math.min(scrollY / 500, 1); // Normalize scroll to 0-1 over first 500px
+  const scrollWave = Math.sin(scrollY * 0.005) * 0.1; // Create a subtle wave effect
+  
+  // Dynamic blur intensity - starts at base blur and gets more intense with scroll
+  const dynamicBlur = navbarAnimated 
+    ? `blur(${10 + scrollRatio * 5 + Math.abs(scrollWave) * 3}px)` 
+    : 'blur(0px)';
+  
+  // Dynamic opacity - subtle breathing effect with scroll
+  const dynamicOpacity = navbarAnimated 
+    ? Math.min(0.85 + scrollRatio * 0.15 + scrollWave * 0.05, 1)
+    : 0;
+  
+  // Dynamic background intensity - gets more opaque with scroll
+  const dynamicBgOpacity = 0.3 + scrollRatio * 0.2 + Math.abs(scrollWave) * 0.1;
+  
+  // Dynamic scale - very subtle breathing effect
+  const dynamicScale = 1 + scrollWave * 0.002;
+
+  // Dynamic styles based on animation state and scroll position
   const navbarStyle = {
     position: 'fixed',
     top: 0,
@@ -10,21 +30,27 @@ const Header = ({ scrolled, scrollToSection }) => {
     right: 0,
     width: '100%',
     zIndex: 1000,
-    padding: scrolled ? `${theme.spacing[12]} 0` : `${theme.spacing[20]} 0`,
+    padding: `${theme.spacing[12]} 0`,
     
-    // Smooth transitions using our theme
-    ...createSpringTransition('all', 'normal'),
+    // Smooth transitions for all dynamic properties
+    transition: navbarAnimated 
+      ? 'all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)' // Smooth follow transition when animated
+      : 'all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.175)', // Initial entrance animation
     
-    // Conditional styling based on scroll state
-    ...(scrolled ? {
-      // Frosted glass effect when scrolled
-      ...createHeaderGlassEffect(),
-      borderBottom: `1px solid ${theme.colors.glass.border.dark}`,
-    } : {
-      // Transparent when at top
-      background: 'transparent',
-      backdropFilter: 'none',
-    }),
+    // Dynamic glass effect with scroll-responsive properties
+    background: `rgba(0, 0, 0, ${dynamicBgOpacity})`,
+    backdropFilter: dynamicBlur,
+    WebkitBackdropFilter: dynamicBlur,
+    borderBottom: `1px solid rgba(255, 255, 255, ${0.1 + scrollRatio * 0.1})`,
+    boxShadow: `0 8px 32px 0 rgba(0, 0, 0, ${0.2 + scrollRatio * 0.15})`,
+    
+    // Animation states with dynamic effects
+    opacity: dynamicOpacity,
+    
+    // Subtle transform animation with breathing effect
+    transform: navbarAnimated 
+      ? `translateY(0) scale(${dynamicScale})` 
+      : 'translateY(-10px) scale(1)',
   };
 
   const containerStyle = {
@@ -36,24 +62,34 @@ const Header = ({ scrolled, scrollToSection }) => {
     alignItems: 'center',
   };
 
+  // Dynamic text properties that respond to scroll
+  const textOpacity = Math.min(0.9 + scrollRatio * 0.1, 1);
+  const textGlow = scrollRatio > 0.3 ? `0 0 8px rgba(255, 255, 255, ${scrollRatio * 0.2})` : 'none';
+
   const brandStyle = {
     // Using theme typography for the brand
     ...theme.typography.title2,
     fontWeight: 700,
-    color: scrolled ? theme.colors.dark.textPrimary : '#FFFFFF', // White when at top, white when scrolled
+    color: theme.colors.dark.textPrimary,
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     letterSpacing: '1px',
     
-    // Add text shadow when not scrolled for distinction against background
-    textShadow: scrolled ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.5)',
+    // Dynamic text effects based on scroll
+    opacity: navbarAnimated ? textOpacity : 0,
+    textShadow: textGlow,
     
-    // Smooth transitions
-    ...createSpringTransition('all', 'fast'),
+    // Entrance animation for the brand text with dynamic follow
+    transform: navbarAnimated 
+      ? `translateX(${scrollWave * 2}px)` // Subtle horizontal sway
+      : 'translateX(-20px)',
+    transition: navbarAnimated
+      ? 'all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1)' // Smooth follow
+      : 'all 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.1)', // Initial entrance
     
     '&:hover': {
-      color: scrolled ? theme.colors.dark.brand : 'rgba(255, 255, 255, 0.9)',
+      color: theme.colors.dark.brand,
     },
     
     '&:focus': {
@@ -70,9 +106,21 @@ const Header = ({ scrolled, scrollToSection }) => {
     margin: 0,
     padding: 0,
     
+    // Dynamic effects for nav menu
+    opacity: navbarAnimated ? textOpacity : 0,
+    filter: scrollRatio > 0.2 ? `drop-shadow(0 0 4px rgba(255, 255, 255, ${scrollRatio * 0.1}))` : 'none',
+    
+    // Entrance animation for the nav menu with subtle counter-sway
+    transform: navbarAnimated 
+      ? `translateX(${-scrollWave * 1.5}px)` // Subtle counter-sway to brand
+      : 'translateX(20px)',
+    transition: navbarAnimated
+      ? 'all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1)' // Smooth follow
+      : 'all 1.1s cubic-bezier(0.175, 0.885, 0.32, 1.15)', // Initial entrance
+    
     // Mobile responsiveness
     '@media (max-width: 768px)': {
-      display: 'none', // Hide on mobile - could implement hamburger menu later
+      display: 'none',
     },
   };
 
@@ -86,25 +134,24 @@ const Header = ({ scrolled, scrollToSection }) => {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    color: scrolled ? theme.colors.dark.textPrimary : '#FFFFFF', // White when at top, white when scrolled
+    color: theme.colors.dark.textPrimary,
     padding: `${theme.spacing[12]} ${theme.spacing[16]}`,
     borderRadius: theme.radius.medium,
     textDecoration: 'none',
     
-    // Add text shadow when not scrolled for distinction against background
-    textShadow: scrolled ? 'none' : '0 2px 6px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4)',
+    // Dynamic text shadow based on scroll
+    textShadow: textGlow,
     
     // Smooth transitions with our spring animations
     ...createSpringTransition('all', 'fast'),
     
-    // Hover effect with subtle glass background
+    // Enhanced hover effect with scroll-responsive backdrop
     '&:hover': {
-      color: scrolled ? theme.colors.dark.textPrimary : 'rgba(255, 255, 255, 0.9)',
-      background: scrolled 
-        ? 'rgba(255, 255, 255, 0.1)' 
-        : 'rgba(255, 255, 255, 0.15)',
-      backdropFilter: 'blur(10px)',
+      color: theme.colors.dark.textPrimary,
+      background: `rgba(255, 255, 255, ${0.1 + scrollRatio * 0.05})`,
+      backdropFilter: `blur(${15 + scrollRatio * 5}px)`,
       transform: 'translateY(-1px)',
+      boxShadow: `0 4px 12px rgba(255, 255, 255, ${0.1 + scrollRatio * 0.1})`,
     },
     
     '&:focus': {
@@ -117,7 +164,7 @@ const Header = ({ scrolled, scrollToSection }) => {
     },
   };
 
-  // Mobile menu toggle button style
+  // Mobile menu toggle button style with dynamic effects
   const mobileToggleStyle = {
     display: 'none',
     background: 'none',
@@ -127,6 +174,12 @@ const Header = ({ scrolled, scrollToSection }) => {
     gap: '4px',
     padding: theme.spacing[8],
     
+    // Dynamic entrance animation for mobile toggle
+    opacity: navbarAnimated ? textOpacity : 0,
+    transition: navbarAnimated
+      ? 'all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1)'
+      : 'opacity 1.0s cubic-bezier(0.175, 0.885, 0.32, 1.1)',
+    
     '@media (max-width: 768px)': {
       display: 'flex',
     },
@@ -135,10 +188,10 @@ const Header = ({ scrolled, scrollToSection }) => {
   const hamburgerBarStyle = {
     width: '24px',
     height: '2px',
-    backgroundColor: scrolled ? theme.colors.dark.textPrimary : '#FFFFFF', // White when at top
+    backgroundColor: theme.colors.dark.textPrimary,
     borderRadius: '1px',
-    // Add subtle shadow for distinction when not scrolled
-    boxShadow: scrolled ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.5)',
+    // Dynamic glow effect for hamburger bars
+    boxShadow: textGlow,
     ...createSpringTransition('all', 'fast'),
   };
 
@@ -151,10 +204,12 @@ const Header = ({ scrolled, scrollToSection }) => {
             style={brandStyle}
             onClick={() => scrollToSection('top')}
             onMouseEnter={(e) => {
-              e.target.style.color = scrolled ? theme.colors.dark.brand : theme.colors.light.brand;
+              e.target.style.color = theme.colors.dark.brand;
+              e.target.style.textShadow = `${textGlow}, 0 0 12px ${theme.colors.dark.brand}40`;
             }}
             onMouseLeave={(e) => {
-              e.target.style.color = scrolled ? theme.colors.dark.textPrimary : theme.colors.light.primary;
+              e.target.style.color = theme.colors.dark.textPrimary;
+              e.target.style.textShadow = textGlow;
             }}
             aria-label="Go to top of page"
           >
@@ -168,16 +223,16 @@ const Header = ({ scrolled, scrollToSection }) => {
                 onClick={() => scrollToSection('top')}
                 style={navLinkStyle}
                 onMouseEnter={(e) => {
-                  e.target.style.background = scrolled 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(255, 255, 255, 0.15)';
-                  e.target.style.backdropFilter = 'blur(10px)';
+                  e.target.style.background = `rgba(255, 255, 255, ${0.15 + scrollRatio * 0.05})`;
+                  e.target.style.backdropFilter = `blur(${15 + scrollRatio * 5}px)`;
                   e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = `0 4px 12px rgba(255, 255, 255, ${0.15 + scrollRatio * 0.1})`;
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'transparent';
                   e.target.style.backdropFilter = 'none';
                   e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
                 Home
@@ -188,16 +243,16 @@ const Header = ({ scrolled, scrollToSection }) => {
                 onClick={() => scrollToSection('about')}
                 style={navLinkStyle}
                 onMouseEnter={(e) => {
-                  e.target.style.background = scrolled 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(255, 255, 255, 0.15)';
-                  e.target.style.backdropFilter = 'blur(10px)';
+                  e.target.style.background = `rgba(255, 255, 255, ${0.15 + scrollRatio * 0.05})`;
+                  e.target.style.backdropFilter = `blur(${15 + scrollRatio * 5}px)`;
                   e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = `0 4px 12px rgba(255, 255, 255, ${0.15 + scrollRatio * 0.1})`;
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'transparent';
                   e.target.style.backdropFilter = 'none';
                   e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
                 About
@@ -208,16 +263,16 @@ const Header = ({ scrolled, scrollToSection }) => {
                 onClick={() => scrollToSection('service')}
                 style={navLinkStyle}
                 onMouseEnter={(e) => {
-                  e.target.style.background = scrolled 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(255, 255, 255, 0.15)';
-                  e.target.style.backdropFilter = 'blur(10px)';
+                  e.target.style.background = `rgba(255, 255, 255, ${0.15 + scrollRatio * 0.05})`;
+                  e.target.style.backdropFilter = `blur(${15 + scrollRatio * 5}px)`;
                   e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = `0 4px 12px rgba(255, 255, 255, ${0.15 + scrollRatio * 0.1})`;
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'transparent';
                   e.target.style.backdropFilter = 'none';
                   e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
                 Resume
@@ -228,16 +283,16 @@ const Header = ({ scrolled, scrollToSection }) => {
                 onClick={() => scrollToSection('portfolio')}
                 style={navLinkStyle}
                 onMouseEnter={(e) => {
-                  e.target.style.background = scrolled 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(255, 255, 255, 0.15)';
-                  e.target.style.backdropFilter = 'blur(10px)';
+                  e.target.style.background = `rgba(255, 255, 255, ${0.15 + scrollRatio * 0.05})`;
+                  e.target.style.backdropFilter = `blur(${15 + scrollRatio * 5}px)`;
                   e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = `0 4px 12px rgba(255, 255, 255, ${0.15 + scrollRatio * 0.1})`;
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'transparent';
                   e.target.style.backdropFilter = 'none';
                   e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
                 Portfolio
@@ -248,16 +303,16 @@ const Header = ({ scrolled, scrollToSection }) => {
                 onClick={() => scrollToSection('contact')}
                 style={navLinkStyle}
                 onMouseEnter={(e) => {
-                  e.target.style.background = scrolled 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(255, 255, 255, 0.15)';
-                  e.target.style.backdropFilter = 'blur(10px)';
+                  e.target.style.background = `rgba(255, 255, 255, ${0.15 + scrollRatio * 0.05})`;
+                  e.target.style.backdropFilter = `blur(${15 + scrollRatio * 5}px)`;
                   e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = `0 4px 12px rgba(255, 255, 255, ${0.15 + scrollRatio * 0.1})`;
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = 'transparent';
                   e.target.style.backdropFilter = 'none';
                   e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
                 Contact

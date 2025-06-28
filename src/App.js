@@ -7,25 +7,43 @@ import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 
 function App() {
-  // State to track navbar background on scroll
-  const [scrolled, setScrolled] = useState(false);
+  // State to track navbar background animation (initial entrance)
+  const [navbarAnimated, setNavbarAnimated] = useState(false);
+  // State to track scroll position for dynamic effects
+  const [scrollY, setScrollY] = useState(0);
 
-  // Handle scroll event for navbar background change
+  // Handle navbar entrance animation on page load
+  useEffect(() => {
+    // Start the navbar background animation after a brief delay for a smooth entrance
+    const timer = setTimeout(() => {
+      setNavbarAnimated(true);
+    }, 300); // 300ms delay before starting the animation
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle scroll events for dynamic navbar effects
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollTop >= 100) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      setScrollY(window.scrollY);
+    };
+
+    // Add smooth scroll listener with throttling for performance
+    let ticking = false;
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll);
-
+    window.addEventListener('scroll', throttledHandleScroll);
+    
     // Cleanup function to remove event listener
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', throttledHandleScroll);
   }, []);
 
   // Smooth scroll function for navigation links
@@ -41,8 +59,12 @@ function App() {
 
   return (
     <div className="App">
-      {/* Header with navigation */}
-      <Header scrolled={scrolled} scrollToSection={scrollToSection} />
+      {/* Header with navigation - now has dynamic scroll effects */}
+      <Header 
+        navbarAnimated={navbarAnimated} 
+        scrollY={scrollY}
+        scrollToSection={scrollToSection} 
+      />
       
       {/* Hero section */}
       <Hero />
