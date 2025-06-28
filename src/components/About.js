@@ -70,7 +70,7 @@ const About = () => {
           <motion.div className="col-md-5" variants={fadeIn}>
             <div className="author">
               <img 
-                src="/img/pfp.png" 
+                src={`${process.env.PUBLIC_URL}/img/pfp.png`}
                 alt="Dr. Shuyi Sun - PhD in Computer Science, UC Davis"
                 loading="lazy"
               />

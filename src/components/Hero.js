@@ -275,7 +275,7 @@ const Hero = () => {
           
           {/* PhD Icon positioned at bottom right */}
           <img 
-            src="/img/phd-icon.png" 
+            src={`${process.env.PUBLIC_URL}/img/phd-icon.png`}
             alt="PhD Icon"
             style={phdIconStyle}
             onMouseEnter={(e) => {

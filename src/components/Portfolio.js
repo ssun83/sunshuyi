@@ -16,7 +16,7 @@ const Portfolio = () => {
   const portfolioItems = [
     {
       id: 1,
-      image: "/img/projects/project1.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project1.png`,
       title: "Advanced Analytics Platform",
       description: "A comprehensive data visualization platform built with modern web technologies, featuring real-time analytics and interactive dashboards.",
       tech: ["React", "D3.js", "Node.js", "PostgreSQL"],
@@ -24,7 +24,7 @@ const Portfolio = () => {
     },
     {
       id: 2,
-      image: "/img/projects/project2.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project2.png`,
       title: "Mobile Fitness Companion",
       description: "Cross-platform mobile application for fitness tracking with AI-powered workout recommendations and social features.",
       tech: ["React Native", "Firebase", "TensorFlow", "Redux"],
@@ -32,7 +32,7 @@ const Portfolio = () => {
     },
     {
       id: 3,
-      image: "/img/projects/project3.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project3.png`,
       title: "E-Commerce Redesign",
       description: "Complete UX/UI overhaul of an enterprise e-commerce platform, focusing on conversion optimization and user experience.",
       tech: ["Figma", "React", "Stripe API", "AWS"],
@@ -40,7 +40,7 @@ const Portfolio = () => {
     },
     {
       id: 4,
-      image: "/img/projects/project4.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project4.png`,
       title: "AI Content Generator",
       description: "Intelligent content creation tool leveraging machine learning to generate high-quality written content for various industries.",
       tech: ["Python", "OpenAI API", "FastAPI", "Docker"],
@@ -48,7 +48,7 @@ const Portfolio = () => {
     },
     {
       id: 5,
-      image: "/img/projects/project5.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project5.png`,
       title: "Blockchain Voting System",
       description: "Secure, transparent voting platform built on blockchain technology ensuring election integrity and voter privacy.",
       tech: ["Solidity", "Web3.js", "Ethereum", "IPFS"],
@@ -56,7 +56,7 @@ const Portfolio = () => {
     },
     {
       id: 6,
-      image: "/img/projects/project6.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project6.png`,
       title: "Smart Home IoT Dashboard",
       description: "Unified control center for IoT devices with energy monitoring, automation rules, and predictive maintenance.",
       tech: ["Vue.js", "MQTT", "InfluxDB", "Grafana"],
@@ -64,7 +64,7 @@ const Portfolio = () => {
     },
     {
       id: 7,
-      image: "/img/projects/project7.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project7.png`,
       title: "Educational VR Experience",
       description: "Immersive virtual reality application for educational institutions, transforming traditional learning into interactive experiences.",
       tech: ["Unity", "C#", "Oculus SDK", "Blender"],
@@ -72,7 +72,7 @@ const Portfolio = () => {
     },
     {
       id: 8,
-      image: "/img/projects/project8.png",
+      image: `${process.env.PUBLIC_URL}/img/projects/project8.png`,
       title: "Financial Trading Bot",
       description: "Automated trading system with advanced algorithms for cryptocurrency markets, featuring risk management and portfolio optimization.",
       tech: ["Python", "TensorFlow", "Binance API", "Redis"],
