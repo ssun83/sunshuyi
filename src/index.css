@@ -1,0 +1,315 @@
+/* Global Styles */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: url("https://cdn.discordapp.com/attachments/553353974472769558/562527225786925056/tree.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  font-family: 'Open Sans', sans-serif;
+  position: relative;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Utility Classes */
+.section-padding {
+  padding: 80px 0;
+  background: transparent;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.section-head {
+  padding-bottom: 40px;
+  text-align: center;
+}
+
+.section-head > h3 {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+/* Header Styles */
+header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+nav.navbar.navbar-default.navbar-fixed-top {
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+nav.navbar.navbar-default.navbar-fixed-top.scrolled {
+  background: rgba(0, 0, 0, 0.6) !important;
+}
+
+nav.navbar.navbar-default {
+  border: none;
+}
+
+.header-menu {
+  padding: 10px 0;
+  color: #2d2c28;
+}
+
+.navbar-default .navbar-brand {
+  color: rgba(160, 145, 130, 0.8);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #2d2c28;
+}
+
+#main-menu ul li a {
+  color: #2d2c28;
+  border-bottom: 2px solid transparent;
+  transition: all 0.4s ease;
+}
+
+#main-menu ul li a:hover,
+#main-menu ul li a:focus {
+  border-bottom: 2px solid #2d2c28;
+  background: transparent;
+}
+
+/* Hero Section */
+.main-top {
+  display: table;
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+}
+
+.main-top-content {
+  display: table-cell;
+  vertical-align: middle;
+  color: #2d2c28;
+}
+
+.main-top-content > h2 {
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.main-top-content > h2 span {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.main-top-content > p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.main-top-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-top-content ul li {
+  display: inline-block;
+  padding: 10px;
+}
+
+.social i {
+  height: 70px;
+  width: 70px;
+  line-height: 70px;
+  border: 1px solid #2d2c28;
+  font-size: 27px;
+  color: #2d2c28;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.social i:hover {
+  background-color: #2d2c28;
+  color: white;
+}
+
+/* About Section */
+.about-me h2 {
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #4D4D50;
+  margin-bottom: 20px;
+}
+
+.author {
+  width: 100%;
+  height: auto;
+  border: 5px solid rgba(160, 145, 130, 0.8);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.author > img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Services/Skills Section */
+.single-service {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.single-service span {
+  height: 80px;
+  width: 80px;
+  text-align: center;
+  line-height: 80px;
+  font-size: 30px;
+  border: 1px solid #333;
+  display: block;
+  margin: auto;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.single-service span:hover {
+  background-color: #333;
+  color: white;
+}
+
+.single-service span a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.single-service h3 {
+  font-size: 28px;
+  padding: 10px 0;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.single-service p {
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* Portfolio Section */
+.single-work {
+  float: left;
+  width: 23%;
+  height: 200px;
+  margin-right: 2.66%;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.single-work:nth-child(4n) {
+  margin-right: 0;
+}
+
+.single-work:hover {
+  transform: scale(1.05);
+}
+
+.single-work > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Contact Section */
+input,
+textarea {
+  width: 100%;
+  display: block;
+  margin-bottom: 20px;
+  resize: none;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  padding: 10px 6px;
+  outline: none;
+  transition: all 0.4s ease;
+  border-radius: 3px;
+}
+
+input[type="submit"] {
+  background: transparent;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+input[type="submit"]:hover {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+input:focus,
+textarea:focus {
+  border: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.contact-address > h2 {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.contact-details {
+  margin-top: 50px;
+}
+
+.contact-details p {
+  margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-top-content > h2 {
+    font-size: 28px;
+  }
+  
+  .main-top-content > p {
+    font-size: 18px;
+  }
+  
+  .social i {
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    font-size: 20px;
+  }
+  
+  .single-work {
+    width: 48%;
+  }
+  
+  .single-work:nth-child(4n) {
+    margin-right: 2.66%;
+  }
+  
+  .single-work:nth-child(2n) {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .single-work {
+    width: 100%;
+    margin-right: 0;
+  }
+}
