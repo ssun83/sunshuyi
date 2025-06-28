@@ -125,7 +125,7 @@ body {
 }
 
 /* ===================================
-   NEW PORTFOLIO GALLERY STYLES
+   INFINITE FLOWING PORTFOLIO GALLERY
    Following Apple's Human Interface Guidelines
    ================================== */
 
@@ -187,32 +187,33 @@ body {
   overflow: hidden;
 }
 
-/* Horizontal Scrolling Gallery */
-.portfolio-gallery {
+/* Infinite Horizontal Scrolling Gallery */
+.portfolio-gallery.infinite-scroll {
   display: flex;
-  height: 70vh;
-  overflow-x: auto;
+  height: 80vh; /* Increased height for 9:16 aspect ratio */
+  overflow-x: hidden; /* Hide scrollbar for infinite effect */
   overflow-y: hidden;
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Disable smooth scrolling for infinite effect */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
   gap: 0; /* No gaps between images as requested */
   cursor: grab;
   position: relative;
+  user-select: none; /* Prevent text selection during scroll */
 }
 
-.portfolio-gallery::-webkit-scrollbar {
+.portfolio-gallery.infinite-scroll::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
 }
 
-.portfolio-gallery:active {
+.portfolio-gallery.infinite-scroll:active {
   cursor: grabbing;
 }
 
-/* Individual Portfolio Items */
-.portfolio-item {
+/* Individual Portfolio Items - 9:16 Aspect Ratio */
+.portfolio-item.portrait-aspect {
   flex: 0 0 auto;
-  width: clamp(300px, 25vw, 400px);
+  width: clamp(280px, 20vw, 350px); /* Adjusted width for 9:16 ratio */
   height: 100%;
   position: relative;
   cursor: pointer;
@@ -238,7 +239,7 @@ body {
   background: #000;
 }
 
-/* Image Container */
+/* Image Container - 9:16 Aspect Ratio */
 .portfolio-image-container {
   position: relative;
   width: 100%;
@@ -250,22 +251,23 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  filter: brightness(0.9) saturate(1.1);
+  filter: brightness(0.95) saturate(1.2) contrast(1.05);
 }
 
-/* Hover Effects - Apple-inspired */
-.portfolio-item:hover {
-  transform: scale(1.02) translateY(-8px);
+/* Hover Effects - Apple-inspired with 9:16 consideration */
+.portfolio-item.portrait-aspect:hover {
+  transform: scale(1.03) translateY(-12px);
   z-index: 5;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 35px 70px -15px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-.portfolio-item:hover .portfolio-image {
-  transform: scale(1.05);
-  filter: brightness(1.1) saturate(1.3);
+.portfolio-item.portrait-aspect:hover .portfolio-image {
+  transform: scale(1.08);
+  filter: brightness(1.15) saturate(1.4) contrast(1.1);
 }
 
 /* Overlay - Appears on hover */
@@ -277,17 +279,17 @@ body {
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
     rgba(0, 0, 0, 0.8) 100%
   );
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .portfolio-item:hover .portfolio-overlay {
@@ -297,8 +299,9 @@ body {
 .portfolio-overlay-content {
   text-align: center;
   color: white;
-  transform: translateY(20px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  transform: translateY(30px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  padding: 20px;
 }
 
 .portfolio-item:hover .portfolio-overlay-content {
@@ -307,30 +310,34 @@ body {
 
 .overlay-title {
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0 0 8px 0;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  margin: 0 0 12px 0;
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .overlay-category {
   display: inline-block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 16px;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .overlay-cta {
   font-size: 0.9rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   opacity: 0;
-  animation: pulse 2s infinite;
+  animation: pulse 2.5s infinite;
+  margin-top: 8px;
 }
 
 .portfolio-item:hover .overlay-cta {
@@ -338,54 +345,66 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.7; }
+  0%, 100% { opacity: 0.6; }
   50% { opacity: 1; }
 }
 
-/* Scroll Indicators */
-.scroll-indicators {
+/* Flow Direction Indicator */
+.flow-indicator {
   position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  pointer-events: none;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10;
+  pointer-events: none;
 }
 
-.scroll-indicator {
-  position: absolute;
-  top: 0;
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
+.flow-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 50%;
   font-size: 24px;
+  font-weight: bold;
   color: #333;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.scroll-indicator.left {
-  left: 20px;
+.flow-arrow.left {
+  animation: flowLeft 1.5s ease-in-out infinite;
 }
 
-.scroll-indicator.right {
-  right: 20px;
+.flow-arrow.right {
+  animation: flowRight 1.5s ease-in-out infinite;
 }
 
-.scroll-indicator:hover {
-  background: rgba(255, 255, 255, 1);
-  transform: scale(1.1);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+@keyframes flowRight {
+  0%, 100% { 
+    transform: translateX(0) scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateX(8px) scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes flowLeft {
+  0%, 100% { 
+    transform: translateX(0) scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateX(-8px) scale(1.1);
+    opacity: 1;
+  }
 }
 
 /* ===================================
@@ -398,9 +417,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -420,9 +439,9 @@ body {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-radius: 20px;
+  border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  max-width: 1000px;
+  max-width: 1100px;
   width: 100%;
   max-height: 90vh;
   overflow: hidden;
@@ -430,7 +449,7 @@ body {
   transform: scale(0.9) translateY(40px);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 30px 60px -12px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
@@ -442,13 +461,13 @@ body {
   position: absolute;
   top: 20px;
   right: 20px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: none;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   color: #333;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -467,7 +486,7 @@ body {
 .modal-body {
   display: flex;
   height: 100%;
-  min-height: 500px;
+  min-height: 550px;
 }
 
 .modal-image-section {
@@ -477,6 +496,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border-radius: 24px 0 0 24px;
 }
 
 .modal-image {
@@ -488,7 +508,7 @@ body {
 
 .modal-details-section {
   flex: 1;
-  padding: 40px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -496,7 +516,7 @@ body {
 }
 
 .modal-header {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .modal-category {
@@ -505,16 +525,16 @@ body {
   font-weight: 600;
   color: #007AFF;
   background: rgba(0, 122, 255, 0.1);
-  padding: 6px 16px;
-  border-radius: 20px;
-  margin-bottom: 12px;
+  padding: 8px 20px;
+  border-radius: 25px;
+  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .modal-title {
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 700;
   color: #1d1d1f;
   margin: 0;
@@ -523,32 +543,32 @@ body {
 }
 
 .modal-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1.15rem;
+  line-height: 1.7;
   color: rgba(45, 44, 40, 0.8);
-  margin: 24px 0;
+  margin: 28px 0;
 }
 
 .modal-tech-stack h4 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #1d1d1f;
-  margin: 32px 0 16px 0;
+  margin: 36px 0 20px 0;
 }
 
 .tech-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 32px;
+  gap: 10px;
+  margin-bottom: 36px;
 }
 
 .tech-tag {
   display: inline-block;
   background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
   color: #333;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 10px 18px;
+  border-radius: 25px;
   font-size: 0.9rem;
   font-weight: 500;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -558,19 +578,20 @@ body {
 .tech-tag:hover {
   background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
   color: white;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
 }
 
 .modal-actions {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   margin-top: auto;
 }
 
 .btn-primary,
 .btn-secondary {
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 14px 28px;
+  border-radius: 14px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -580,18 +601,18 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 140px;
+  min-width: 150px;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
   color: white;
-  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 122, 255, 0.4);
 }
 
 .btn-secondary {
@@ -602,17 +623,28 @@ body {
 
 .btn-secondary:hover {
   background: rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 /* ===================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN - 9:16 OPTIMIZED
    ================================== */
+
+/* Large Desktop */
+@media (min-width: 1400px) {
+  .portfolio-item.portrait-aspect {
+    width: clamp(320px, 18vw, 380px);
+  }
+}
 
 /* Tablet */
 @media (max-width: 1024px) {
-  .portfolio-item {
-    width: clamp(280px, 30vw, 350px);
+  .portfolio-item.portrait-aspect {
+    width: clamp(260px, 25vw, 320px);
+  }
+  
+  .portfolio-gallery.infinite-scroll {
+    height: 75vh;
   }
   
   .modal-body {
@@ -620,12 +652,13 @@ body {
   }
   
   .modal-image-section {
-    height: 300px;
+    height: 350px;
     flex: none;
+    border-radius: 24px 24px 0 0;
   }
   
   .modal-details-section {
-    padding: 30px;
+    padding: 40px;
   }
   
   .portfolio-title {
@@ -639,30 +672,36 @@ body {
     padding: 60px 20px 40px;
   }
   
-  .portfolio-item {
-    width: clamp(250px, 40vw, 300px);
+  .portfolio-item.portrait-aspect {
+    width: clamp(220px, 35vw, 280px);
   }
   
-  .portfolio-gallery {
-    height: 60vh;
+  .portfolio-gallery.infinite-scroll {
+    height: 65vh;
   }
   
-  .scroll-indicators {
-    display: none; /* Hide scroll indicators on mobile */
+  .flow-indicator {
+    bottom: 20px;
+  }
+  
+  .flow-arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
   }
   
   .modal-content {
     margin: 10px;
     max-height: 95vh;
-    border-radius: 16px;
+    border-radius: 20px;
   }
   
   .modal-details-section {
-    padding: 20px;
+    padding: 30px;
   }
   
   .modal-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
   
   .modal-actions {
@@ -677,12 +716,12 @@ body {
 
 /* Small Mobile */
 @media (max-width: 480px) {
-  .portfolio-item {
-    width: clamp(200px, 50vw, 250px);
+  .portfolio-item.portrait-aspect {
+    width: clamp(180px, 45vw, 240px);
   }
   
-  .portfolio-gallery {
-    height: 50vh;
+  .portfolio-gallery.infinite-scroll {
+    height: 60vh;
   }
   
   .portfolio-title {
@@ -691,6 +730,15 @@ body {
   
   .portfolio-subtitle {
     font-size: 1rem;
+  }
+  
+  .overlay-title {
+    font-size: 1.1rem;
+  }
+  
+  .overlay-category {
+    font-size: 0.75rem;
+    padding: 4px 12px;
   }
 }
 
@@ -709,14 +757,21 @@ body {
   }
 }
 
-/* Performance optimizations for animations */
-.portfolio-item,
+/* Performance optimizations for infinite scroll */
+.portfolio-item.portrait-aspect,
 .portfolio-image,
 .portfolio-overlay,
-.modal-content {
+.modal-content,
+.flow-arrow {
   will-change: transform;
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Smooth infinite scroll performance */
+.portfolio-gallery.infinite-scroll {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 /* OLD PORTFOLIO STYLES - COMMENTED OUT FOR REFERENCE */

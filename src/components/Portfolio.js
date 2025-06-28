@@ -3,7 +3,14 @@ import React, { useState, useRef, useEffect } from 'react';
 const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const galleryRef = useRef(null);
+  const mouseAreaRef = useRef(null);
+  const animationRef = useRef(null);
+  const lastScrollTime = useRef(Date.now());
+  const resumeTimeoutRef = useRef(null);
+  const portfolioSectionRef = useRef(null); // Add ref for the portfolio section
 
   // Project data with actual local images and enhanced details
   const portfolioItems = [
@@ -73,16 +80,23 @@ const Portfolio = () => {
     }
   ];
 
+  // Create infinite array by tripling the items for seamless loop
+  const infiniteItems = [...portfolioItems, ...portfolioItems, ...portfolioItems];
+
   // Handle project click to show details
   const handleProjectClick = (project) => {
     setSelectedProject(project);
     setIsModalOpen(true);
+    setIsAutoScrolling(false); // Pause auto-scroll when modal opens
   };
 
   // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
-    setTimeout(() => setSelectedProject(null), 300); // Delay to allow exit animation
+    setTimeout(() => {
+      setSelectedProject(null);
+      setIsAutoScrolling(true); // Resume auto-scroll when modal closes
+    }, 300);
   };
 
   // Handle escape key to close modal
@@ -97,45 +111,142 @@ const Portfolio = () => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isModalOpen]);
 
-  // Handle smooth horizontal scroll with mouse wheel
+  // Track page scroll position to control gallery direction
   useEffect(() => {
-    const handleWheelScroll = (e) => {
-      if (galleryRef.current && !isModalOpen) {
-        // Convert vertical scroll to horizontal for better UX
-        e.preventDefault();
-        galleryRef.current.scrollLeft += e.deltaY;
+    const handlePageScroll = () => {
+      if (!portfolioSectionRef.current) return;
+      
+      const portfolioSection = portfolioSectionRef.current;
+      const rect = portfolioSection.getBoundingClientRect();
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate the center point of the portfolio section relative to viewport
+      const sectionCenter = sectionTop + (sectionHeight / 2);
+      const viewportCenter = viewportHeight / 2;
+      
+      // Change direction based on whether we've scrolled past the section's center
+      // When section center is above viewport center, scroll right
+      // When section center is below viewport center, scroll left
+      if (sectionCenter < viewportCenter) {
+        setScrollDirection(1); // Scroll right
+      } else {
+        setScrollDirection(-1); // Scroll left
       }
     };
 
-    const gallery = galleryRef.current;
-    if (gallery) {
-      gallery.addEventListener('wheel', handleWheelScroll, { passive: false });
-      return () => gallery.removeEventListener('wheel', handleWheelScroll);
+    // Set initial direction
+    handlePageScroll();
+    
+    window.addEventListener('scroll', handlePageScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handlePageScroll);
+    };
+  }, []);
+
+  // Auto-scroll with simplified logic (removed problematic direction reversal)
+  useEffect(() => {
+    const autoScroll = () => {
+      if (!galleryRef.current || !isAutoScrolling || isModalOpen) {
+        animationRef.current = requestAnimationFrame(autoScroll);
+        return;
+      }
+
+      const gallery = galleryRef.current;
+      const maxScrollLeft = gallery.scrollWidth - gallery.clientWidth;
+      const scrollSpeed = 0.8;
+
+      // Apply scrolling based on current direction
+      gallery.scrollLeft += scrollSpeed * scrollDirection;
+
+      // Reset scroll position for infinite loop
+      if (gallery.scrollLeft >= maxScrollLeft) {
+        gallery.scrollLeft = gallery.scrollLeft - (maxScrollLeft / 3);
+      } else if (gallery.scrollLeft <= 0) {
+        gallery.scrollLeft = maxScrollLeft / 3;
+      }
+
+      animationRef.current = requestAnimationFrame(autoScroll);
+    };
+
+    animationRef.current = requestAnimationFrame(autoScroll);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [scrollDirection, isAutoScrolling, isModalOpen]);
+
+  // Handle manual scroll with improved logic and smaller capture area
+  useEffect(() => {
+    const handleWheelScroll = (e) => {
+      if (galleryRef.current && !isModalOpen) {
+        e.preventDefault();
+        
+        // Clear any existing resume timeout
+        if (resumeTimeoutRef.current) {
+          clearTimeout(resumeTimeoutRef.current);
+        }
+        
+        // Temporarily pause auto-scroll for manual control
+        setIsAutoScrolling(false);
+        lastScrollTime.current = Date.now();
+        
+        // Apply manual scroll with reduced sensitivity
+        const scrollAmount = e.deltaY * 0.3;
+        galleryRef.current.scrollLeft += scrollAmount;
+        
+        // Influence direction based on manual scroll
+        if (e.deltaY > 0) {
+          setScrollDirection(1); // Scrolling right
+        } else if (e.deltaY < 0) {
+          setScrollDirection(-1); // Scrolling left
+        }
+        
+        // Resume auto-scroll after shorter delay
+        resumeTimeoutRef.current = setTimeout(() => {
+          setIsAutoScrolling(true);
+        }, 800); // Reduced from 1500ms to 800ms
+      }
+    };
+
+    const mouseArea = mouseAreaRef.current;
+    if (mouseArea) {
+      mouseArea.addEventListener('wheel', handleWheelScroll, { passive: false });
+      return () => {
+        mouseArea.removeEventListener('wheel', handleWheelScroll);
+        if (resumeTimeoutRef.current) {
+          clearTimeout(resumeTimeoutRef.current);
+        }
+      };
     }
   }, [isModalOpen]);
 
   return (
     <>
-      <div id="portfolio" className="portfolio-section">
+      <div id="portfolio" className="portfolio-section" ref={portfolioSectionRef}>
         {/* Section Header - Floating above the gallery */}
         <div className="portfolio-header">
           <h3 className="portfolio-title">My Works</h3>
           <p className="portfolio-subtitle">A curated selection of projects showcasing innovation and craftsmanship</p>
         </div>
 
-        {/* Edge-to-Edge Flowing Gallery */}
+        {/* Edge-to-Edge Infinite Flowing Gallery */}
         <div className="portfolio-gallery-container">
           <div 
-            className="portfolio-gallery" 
+            className="portfolio-gallery infinite-scroll" 
             ref={galleryRef}
           >
-            {portfolioItems.map((project, index) => (
+            {infiniteItems.map((project, index) => (
               <div 
-                key={project.id} 
-                className="portfolio-item"
+                key={`${project.id}-${Math.floor(index / portfolioItems.length)}`}
+                className="portfolio-item portrait-aspect"
                 onClick={() => handleProjectClick(project)}
                 style={{ 
-                  '--animation-delay': `${index * 0.1}s`,
+                  '--animation-delay': `${(index % portfolioItems.length) * 0.1}s`,
                   '--item-index': index 
                 }}
               >
@@ -160,10 +271,14 @@ const Portfolio = () => {
             ))}
           </div>
 
-          {/* Scroll indicators */}
-          <div className="scroll-indicators">
-            <div className="scroll-indicator left">‹</div>
-            <div className="scroll-indicator right">›</div>
+          {/* Smaller Mouse Control Area */}
+          <div className="mouse-control-area" ref={mouseAreaRef}></div>
+
+          {/* Flow Direction Indicator */}
+          <div className="flow-indicator">
+            <div className={`flow-arrow ${scrollDirection === 1 ? 'right' : 'left'}`}>
+              {scrollDirection === 1 ? '→' : '←'}
+            </div>
           </div>
         </div>
       </div>
