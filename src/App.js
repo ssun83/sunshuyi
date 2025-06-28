@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
 import Resume from './components/Resume';
 import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
+import FallingLeaves from './components/FallingLeaves';
 
 function App() {
   // State to track navbar background animation (initial entrance)
@@ -59,6 +60,7 @@ function App() {
 
   return (
     <div className="App">
+      <FallingLeaves />
       {/* Header with navigation - now has dynamic scroll effects */}
       <Header 
         navbarAnimated={navbarAnimated} 
@@ -66,20 +68,22 @@ function App() {
         scrollToSection={scrollToSection} 
       />
       
-      {/* Hero section */}
+      {/* Hero section is outside main to allow leaves to overlap it */}
       <Hero />
       
-      {/* About section */}
-      <About />
-      
-      {/* Resume/Skills section */}
-      <Resume />
-      
-      {/* Portfolio section */}
-      <Portfolio />
-      
-      {/* Contact section */}
-      <Contact />
+      <main>
+        {/* About section */}
+        <About />
+        
+        {/* Resume/Skills section */}
+        <Resume />
+        
+        {/* Portfolio section */}
+        <Portfolio />
+        
+        {/* Contact section */}
+        <Contact />
+      </main>
     </div>
   );
 }

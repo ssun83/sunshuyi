@@ -946,3 +946,50 @@ body {
     background: rgba(0, 0, 0, 0.8) !important;
   }
 }
+
+/* --- Leaf Animation Styles --- */
+
+.leaves-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3; /* Above hero text, below main sections */
+  overflow: hidden;
+}
+
+.leaves-container img {
+  position: absolute;
+  top: -10vh; /* Start above the viewport */
+}
+
+/* --- Content Layering --- */
+
+.App > main {
+  position: relative;
+  z-index: 4; /* Ensures main content sections are above the leaves */
+  background: transparent;
+}
+
+/* Ensure sections with backgrounds hide leaves.
+   They inherit the z-index from the main tag. */
+.section-padding,
+.portfolio-section,
+#contact {
+  position: relative;
+}
+
+/* The hero section sits at a lower z-index context, allowing leaves to pass over it.
+   The hero component itself has internal z-indexing for its text. */
+#hero {
+  position: relative;
+  /* z-index is managed inside the Hero component, which is lower than the leaves */
+}
+
+/* Make sure the header is always on top */
+header {
+    position: relative;
+    z-index: 1000 !important;
+}
