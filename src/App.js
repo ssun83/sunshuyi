@@ -6,6 +6,7 @@ import Resume from './components/Resume';
 import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 import FallingLeaves from './components/FallingLeaves';
+import { ThemeProvider } from './components/ThemeContext';
 
 function App() {
   // State to track navbar background animation (initial entrance)
@@ -59,32 +60,34 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <FallingLeaves />
-      {/* Header with navigation - now has dynamic scroll effects */}
-      <Header 
-        navbarAnimated={navbarAnimated} 
-        scrollY={scrollY}
-        scrollToSection={scrollToSection} 
-      />
-      
-      {/* Hero section is outside main to allow leaves to overlap it */}
-      <Hero />
-      
-      <main>
-        {/* About section */}
-        <About />
+    <ThemeProvider>
+      <div className="App">
+        <FallingLeaves />
+        {/* Header with navigation - now has dynamic scroll effects */}
+        <Header 
+          navbarAnimated={navbarAnimated} 
+          scrollY={scrollY}
+          scrollToSection={scrollToSection} 
+        />
         
-        {/* Resume/Skills section */}
-        <Resume />
+        {/* Hero section is outside main to allow leaves to overlap it */}
+        <Hero />
         
-        {/* Portfolio section */}
-        <Portfolio />
-        
-        {/* Contact section */}
-        <Contact />
-      </main>
-    </div>
+        <main>
+          {/* About section */}
+          <About />
+          
+          {/* Resume/Skills section */}
+          <Resume />
+          
+          {/* Portfolio section */}
+          <Portfolio />
+          
+          {/* Contact section */}
+          <Contact />
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { theme, createHeroGlassEffect, createSpringTransition } from '../theme/theme.js';
+import { useTheme } from './ThemeContext';
 
 const Hero = () => {
+  // Get theme context for background switching and button state
+  const { toggleTheme, getCurrentConfig, isCatTheme } = useTheme();
+  const currentConfig = getCurrentConfig();
+
   // Animation state management for sexy entrance effects
   const [isLoaded, setIsLoaded] = useState(false);
   const [animationPhase, setAnimationPhase] = useState(0);
+  const [pawButtonHovered, setPawButtonHovered] = useState(false);
+  const [pawButtonPressed, setPawButtonPressed] = useState(false);
 
   // Trigger our beautiful staggered animation sequence
   useEffect(() => {
@@ -34,31 +41,78 @@ const Hero = () => {
     position: 'relative',
     overflow: 'hidden',
     
-    // Background with tree.jpg and heavy bokeh blur
+    // Dynamic background switching with smooth transitions
     background: `
       linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
-      url('${process.env.PUBLIC_URL}/img/tree.jpg')
+      url('${process.env.PUBLIC_URL}/${currentConfig.background}')
     `,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
     
-    // Add blur overlay for bokeh effect
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: `url('${process.env.PUBLIC_URL}/img/tree.jpg')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      filter: theme.colors.glass.blur.heavy,
-      opacity: 0.3,
-      zIndex: 1,
+    // Smooth background transition when switching themes
+    transition: 'background 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  };
+
+  // Paw Print Button Styles - The star of the show!
+  const pawButtonStyle = {
+    position: 'absolute',
+    bottom: theme.spacing[24],
+    right: theme.spacing[24],
+    width: '64px',
+    height: '64px',
+    borderRadius: '50%',
+    border: 'none',
+    cursor: 'pointer',
+    zIndex: 10,
+    
+    // Beautiful glassmorphic background
+    background: isCatTheme 
+      ? 'linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 105, 180, 0.4))'
+      : 'linear-gradient(135deg, rgba(34, 139, 34, 0.3), rgba(50, 205, 50, 0.4))',
+    backdropFilter: 'blur(12px)',
+    boxShadow: pawButtonHovered 
+      ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+      : '0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+    
+    // Sexy transform animations
+    transform: pawButtonPressed 
+      ? 'scale(0.95) translateY(1px)' 
+      : pawButtonHovered 
+        ? 'scale(1.1) translateY(-2px)' 
+        : animationPhase >= 4 
+          ? 'scale(1) translateY(0)' 
+          : 'scale(0.8) translateY(20px)',
+    
+    opacity: animationPhase >= 4 ? 1 : 0,
+    
+    // Smooth spring transitions for maximum sexiness
+    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+    
+    // Focus ring for accessibility
+    '&:focus': {
+      outline: `3px solid ${isCatTheme ? '#ff69b4' : '#32cd32'}`,
+      outlineOffset: '2px',
     },
+  };
+
+  const pawIconStyle = {
+    width: '32px',
+    height: '32px',
+    fill: isCatTheme ? '#ff69b4' : '#2d5a2d',
+    transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+    transform: pawButtonHovered ? 'rotate(15deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+    filter: pawButtonHovered ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' : 'none',
+  };
+
+  // Handle paw button click with sexy feedback
+  const handlePawButtonClick = () => {
+    setPawButtonPressed(true);
+    setTimeout(() => setPawButtonPressed(false), 150);
+    
+    // Toggle theme with beautiful transition
+    toggleTheme();
   };
 
   const heroContentWrapperStyle = {
@@ -122,7 +176,9 @@ const Hero = () => {
   const heroNameStyle = {
     // Special styling for the name with extra animation delay
     fontWeight: 800,
-    background: `linear-gradient(135deg, #000000 0%, #ff69b4 100%)`,
+    background: isCatTheme 
+      ? 'linear-gradient(135deg, #ff69b4 0%, #ff1493 100%)'
+      : 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
@@ -230,7 +286,7 @@ const Hero = () => {
   const phdIconStyle = {
     position: 'absolute',
     bottom: theme.spacing[24],
-    right: theme.spacing[24],
+    left: theme.spacing[24], // Moved to left to make room for paw button
     width: '48px',
     height: '48px',
     opacity: animationPhase >= 3 ? 0.8 : 0,
@@ -253,12 +309,13 @@ const Hero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `url('${process.env.PUBLIC_URL}/img/tree.jpg')`,
+          background: `url('${process.env.PUBLIC_URL}/${currentConfig.background}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: theme.colors.glass.blur.heavy,
           opacity: 0.2,
           zIndex: 1,
+          transition: 'all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Smooth background transition
         }}
       />
       
@@ -273,7 +330,7 @@ const Hero = () => {
             Researcher, Designer, Developer
           </p>
           
-          {/* PhD Icon positioned at bottom right */}
+          {/* PhD Icon positioned at bottom left */}
           <img 
             src={`${process.env.PUBLIC_URL}/img/phd-icon.png`}
             alt="PhD Icon"
@@ -376,6 +433,23 @@ const Hero = () => {
           </ul>
         </div>
       </div>
+
+      {/* 🐾 SEXY PAW PRINT BUTTON - The main attraction! */}
+      <button
+        onClick={handlePawButtonClick}
+        onMouseEnter={() => setPawButtonHovered(true)}
+        onMouseLeave={() => setPawButtonHovered(false)}
+        onMouseDown={() => setPawButtonPressed(true)}
+        onMouseUp={() => setPawButtonPressed(false)}
+        style={pawButtonStyle}
+        aria-label={`Switch to ${isCatTheme ? 'nature' : 'cat'} theme`}
+        title={`Currently: ${currentConfig.name}. Click to switch!`}
+      >
+        {/* Beautiful SVG paw print icon */}
+        <svg viewBox="0 0 24 24" style={pawIconStyle}>
+          <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9C21.6 9 22 9.4 22 10C22 10.6 21.6 11 21 11C20.4 11 20 10.6 20 10C20 9.4 20.4 9 21 9ZM3 9C3.6 9 4 9.4 4 10C4 10.6 3.6 11 3 11C2.4 11 2 10.6 2 10C2 9.4 2.4 9 3 9ZM19 14C19.6 14 20 14.4 20 15C20 15.6 19.6 16 19 16C18.4 16 18 15.6 18 15C18 14.4 18.4 14 19 14ZM5 14C5.6 14 6 14.4 6 15C6 15.6 5.6 16 5 16C4.4 16 4 15.6 4 15C4 14.4 4.4 14 5 14ZM17 18C17 19.1 16.1 20 15 20H9C7.9 20 7 19.1 7 18C7 17.4 7.2 16.8 7.6 16.4L10.6 13.4C11.4 12.6 12.6 12.6 13.4 13.4L16.4 16.4C16.8 16.8 17 17.4 17 18Z"/>
+        </svg>
+      </button>
     </div>
   );
 };

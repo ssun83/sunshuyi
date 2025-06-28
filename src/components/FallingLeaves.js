@@ -1,16 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-
-const leafImages = [
-  'img/leaves/leaf1.png',
-  'img/leaves/leaf2.png',
-  'img/leaves/leaf3.png',
-  'img/leaves/leaf4.png',
-  'img/leaves/leaf5.png',
-  'img/leaves/leaf6.png',
-  'img/leaves/leaf7.png',
-  'img/leaves/leaf8.png'
-];
+import { useTheme } from './ThemeContext';
 
 // Custom hook to track mouse position and velocity, independent of scroll
 const useMouse = () => {
@@ -65,7 +55,7 @@ const useMouse = () => {
   return { mousePos, mouseVel };
 };
 
-const Leaf = ({ mouse, pageHeight }) => {
+const Leaf = ({ mouse, pageHeight, itemIndex, currentConfig }) => {
   const x = useMotionValue(Math.random() * window.innerWidth);
   const y = useMotionValue(Math.random() * -window.innerHeight - 50);
   const size = useRef(Math.random() * 20 + 20);
@@ -74,32 +64,38 @@ const Leaf = ({ mouse, pageHeight }) => {
   const rotation = useMotionValue(Math.random() * 360);
   const rotationSpeed = useRef(Math.random() * 2 - 1);
 
-  const springConfig = { damping: 20, stiffness: 100, mass: mass.current };
+  // Enhanced spring config for smoother theme transitions
+  const springConfig = { damping: 25, stiffness: 120, mass: mass.current };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  const leafSrc = leafImages[Math.floor(Math.random() * leafImages.length)];
+  // Get the current falling object image from theme config
+  const fallingObjectSrc = currentConfig.fallInObjects[itemIndex % currentConfig.fallInObjects.length];
 
   useEffect(() => {
     let animationFrame;
 
     const update = () => {
-      velocity.current.y += 0.01; // Gravity
+      // Slightly different gravity for paws vs leaves for variety
+      const gravityStrength = currentConfig.name.includes('Cat') ? 0.008 : 0.01;
+      velocity.current.y += gravityStrength;
 
       const { mousePos, mouseVel } = mouse;
       const dx = x.get() - mousePos.current.x;
       const dy = y.get() - mousePos.current.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
+      // Enhanced interaction radius and responsiveness
       if (dist < 150) {
         const force = 1 - dist / 150;
-        const windStrength = 0.8;
+        const windStrength = currentConfig.name.includes('Cat') ? 0.9 : 0.8; // Paws are more responsive
         velocity.current.x += mouseVel.current.x * force * windStrength;
         velocity.current.y += mouseVel.current.y * force * windStrength;
       }
 
-      velocity.current.x *= 0.96; // Damping
-      velocity.current.y *= 0.96;
+      // Enhanced damping for smoother movement
+      velocity.current.x *= 0.97;
+      velocity.current.y *= 0.97;
 
       x.set(x.get() + velocity.current.x);
       y.set(y.get() + velocity.current.y);
@@ -122,12 +118,12 @@ const Leaf = ({ mouse, pageHeight }) => {
 
     animationFrame = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationFrame);
-  }, [x, y, rotation, mouse, pageHeight]);
+  }, [x, y, rotation, mouse, pageHeight, currentConfig]);
 
   return (
     <motion.img
-      src={leafSrc}
-      alt="Falling leaf"
+      src={`${process.env.PUBLIC_URL}/${fallingObjectSrc}`}
+      alt={currentConfig.name.includes('Cat') ? "Falling paw" : "Falling leaf"}
       style={{
         position: 'absolute',
         top: 0,
@@ -137,6 +133,17 @@ const Leaf = ({ mouse, pageHeight }) => {
         x: springX,
         y: springY,
         rotate: rotation,
+        // Add beautiful transition when switching between themes
+        opacity: 1,
+        filter: currentConfig.name.includes('Cat') ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' : 'none',
+      }}
+      // Beautiful entrance animation when theme switches
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0, opacity: 0 }}
+      transition={{ 
+        duration: 0.6, 
+        ease: [0.175, 0.885, 0.32, 1.275] // Sexy spring curve
       }}
     />
   );
@@ -145,6 +152,10 @@ const Leaf = ({ mouse, pageHeight }) => {
 const FallingLeaves = ({ count = 25 }) => {
   const mouse = useMouse();
   const [pageHeight, setPageHeight] = useState(0);
+  
+  // Get theme context for dynamic switching
+  const { getCurrentConfig } = useTheme();
+  const currentConfig = getCurrentConfig();
 
   useEffect(() => {
     const updateHeight = () => {
@@ -155,13 +166,22 @@ const FallingLeaves = ({ count = 25 }) => {
     return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
-  const leaves = React.useMemo(() => (
-    Array.from({ length: count }, (_, i) => <Leaf key={i} mouse={mouse} pageHeight={pageHeight} />)
-  ), [count, mouse, pageHeight]);
+  // Generate falling objects with theme-aware randomization
+  const fallingObjects = React.useMemo(() => (
+    Array.from({ length: count }, (_, i) => 
+      <Leaf 
+        key={`${currentConfig.name}-${i}`} // Key changes with theme for smooth transitions
+        mouse={mouse} 
+        pageHeight={pageHeight}
+        itemIndex={i}
+        currentConfig={currentConfig}
+      />
+    )
+  ), [count, mouse, pageHeight, currentConfig]);
 
   return (
     <div
-      className="leaves-container"
+      className="falling-objects-container"
       style={{
         position: 'absolute',
         top: 0,
@@ -171,9 +191,11 @@ const FallingLeaves = ({ count = 25 }) => {
         pointerEvents: 'none',
         overflow: 'hidden',
         zIndex: 1,
+        // Beautiful theme transition effects
+        transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
       }}
     >
-      {leaves}
+      {fallingObjects}
     </div>
   );
 };
