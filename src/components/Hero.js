@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { theme, createHeroGlassEffect, createSpringTransition } from '../theme/theme.js';
 
 const Hero = () => {
+  // Animation state management for sexy entrance effects
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState(0);
+
+  // Trigger our beautiful staggered animation sequence
+  useEffect(() => {
+    // Start the animation sequence after a brief moment
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+      
+      // Staggered animation phases for maximum visual impact
+      const phases = [1, 2, 3, 4];
+      phases.forEach((phase, index) => {
+        setTimeout(() => {
+          setAnimationPhase(phase);
+        }, index * 200); // 200ms stagger between each element
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Inline styles using our theme system for maximum performance
   const heroContainerStyle = {
     // Full viewport height with centered content
@@ -56,12 +78,20 @@ const Hero = () => {
     margin: '0 auto',
     padding: `${theme.spacing[48]} ${theme.spacing[32]}`,
     
-    // Smooth animations
-    ...createSpringTransition('all', 'slow'),
+    // Beautiful entrance animation - starts from below and scales up
+    transform: isLoaded 
+      ? 'translateY(0) scale(1)' 
+      : 'translateY(40px) scale(0.95)',
+    opacity: isLoaded ? 1 : 0,
+    
+    // Smooth spring-like animations for maximum sexiness
+    transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     
     // Hover effect for extra sexiness
     '&:hover': {
-      transform: 'translateY(-4px) scale(1.02)',
+      transform: isLoaded 
+        ? 'translateY(-4px) scale(1.02)' 
+        : 'translateY(40px) scale(0.95)',
       boxShadow: theme.shadows.heavy,
     },
   };
@@ -73,6 +103,13 @@ const Hero = () => {
     marginBottom: theme.spacing[16],
     textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     
+    // Sexy slide-in animation from the left with fade
+    transform: animationPhase >= 1 
+      ? 'translateX(0) translateY(0)' 
+      : 'translateX(-30px) translateY(10px)',
+    opacity: animationPhase >= 1 ? 1 : 0,
+    transition: 'all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+    
     // Responsive scaling
     '@media (max-width: 768px)': {
       fontSize: '36px',
@@ -83,13 +120,20 @@ const Hero = () => {
   };
 
   const heroNameStyle = {
-    // Special styling for the name
+    // Special styling for the name with extra animation delay
     fontWeight: 800,
     background: `linear-gradient(135deg, #000000 0%, #ff69b4 100%)`,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
     display: 'inline-block',
+    
+    // Delayed animation for the name to pop in after title
+    transform: animationPhase >= 2 
+      ? 'scale(1) translateY(0)' 
+      : 'scale(0.8) translateY(5px)',
+    opacity: animationPhase >= 2 ? 1 : 0.3,
+    transition: 'all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2)',
   };
 
   const heroSubtitleStyle = {
@@ -99,6 +143,13 @@ const Hero = () => {
     marginBottom: theme.spacing[32],
     fontWeight: 400,
     letterSpacing: '0.5px',
+    
+    // Elegant slide-up animation with fade
+    transform: animationPhase >= 2 
+      ? 'translateY(0)' 
+      : 'translateY(20px)',
+    opacity: animationPhase >= 2 ? 1 : 0,
+    transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.1)',
     
     // Responsive scaling
     '@media (max-width: 768px)': {
@@ -117,10 +168,24 @@ const Hero = () => {
     justifyContent: 'center',
     gap: theme.spacing[16],
     flexWrap: 'wrap',
+    
+    // Beautiful fade-in and slide-up animation for the entire container
+    transform: animationPhase >= 3 
+      ? 'translateY(0)' 
+      : 'translateY(30px)',
+    opacity: animationPhase >= 3 ? 1 : 0,
+    transition: 'all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.15)',
   };
 
   const socialItemStyle = {
     display: 'inline-block',
+    
+    // Individual staggered animations for each social link
+    transform: animationPhase >= 4 
+      ? 'scale(1) translateY(0)' 
+      : 'scale(0.8) translateY(10px)',
+    opacity: animationPhase >= 4 ? 1 : 0,
+    transition: 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4)',
   };
 
   const socialLinkStyle = {
@@ -135,8 +200,8 @@ const Hero = () => {
     fontSize: '24px',
     textDecoration: 'none',
     
-    // Smooth glass-like transition effects
-    ...createSpringTransition('all', 'fast'),
+    // Smooth glass-like transition effects with enhanced spring
+    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     background: 'rgba(255, 255, 255, 0.1)',
     backdropFilter: 'blur(10px)',
     
@@ -161,6 +226,23 @@ const Hero = () => {
     },
   };
 
+  // PhD Icon with subtle bounce animation
+  const phdIconStyle = {
+    position: 'absolute',
+    bottom: theme.spacing[24],
+    right: theme.spacing[24],
+    width: '48px',
+    height: '48px',
+    opacity: animationPhase >= 3 ? 0.8 : 0,
+    filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+    
+    // Sexy bounce-in animation
+    transform: animationPhase >= 3 
+      ? 'scale(1) translateY(0)' 
+      : 'scale(0.5) translateY(15px)',
+    transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.6)',
+  };
+
   return (
     <div id="top" style={heroContainerStyle}>
       {/* Background blur overlay for bokeh effect */}
@@ -182,7 +264,7 @@ const Hero = () => {
       
       <div style={heroContentWrapperStyle}>
         {/* Frosted glass content card */}
-        <div style={heroGlassCardStyle}>
+        <div style={{...heroGlassCardStyle, position: 'relative'}}>
           <h1 style={heroTitleStyle}>
             I am <span style={heroNameStyle}>Shuyi Sun</span>
           </h1>
@@ -190,6 +272,21 @@ const Hero = () => {
           <p style={heroSubtitleStyle}>
             Researcher, Designer, Developer
           </p>
+          
+          {/* PhD Icon positioned at bottom right */}
+          <img 
+            src="/img/phd-icon.png" 
+            alt="PhD Icon"
+            style={phdIconStyle}
+            onMouseEnter={(e) => {
+              e.target.style.opacity = '1';
+              e.target.style.transform = 'scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.opacity = '0.8';
+              e.target.style.transform = 'scale(1)';
+            }}
+          />
           
           {/* Social media links with glass effects */}
           <ul style={socialContainerStyle}>
