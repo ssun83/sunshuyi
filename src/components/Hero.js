@@ -37,7 +37,7 @@ const Hero = () => {
     // Background with tree.png and heavy bokeh blur
     background: `
       linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
-      url('/img/tree.png')
+      url('${process.env.PUBLIC_URL}/img/tree.png')
     `,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
@@ -52,7 +52,7 @@ const Hero = () => {
       left: 0,
       right: 0,
       bottom: 0,
-      background: `url('/img/tree.png')`,
+      background: `url('${process.env.PUBLIC_URL}/img/tree.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       filter: theme.colors.glass.blur.heavy,
@@ -253,7 +253,7 @@ const Hero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `url('/img/tree.png')`,
+          background: `url('${process.env.PUBLIC_URL}/img/tree.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: theme.colors.glass.blur.heavy,
