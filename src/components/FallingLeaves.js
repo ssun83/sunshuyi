@@ -6,39 +6,39 @@ const leafImages = [
   'img/leaves/leaf2.png',
 ];
 
-// Custom hook to track mouse position and velocity
+// Custom hook to track mouse position and velocity, independent of scroll
 const useMouse = () => {
-  const mousePos = useRef({ x: 0, y: 0 });
-  const mouseVel = useRef({ x: 0, y: 0 });
-  const prevMousePos = useRef({ x: 0, y: 0 });
+  const mousePos = useRef({ x: 0, y: 0 }); // Position in document coordinates
+  const mouseVel = useRef({ x: 0, y: 0 }); // Velocity in viewport coordinates
+  const prevClientMousePos = useRef({ x: 0, y: 0 });
   const lastTimestamp = useRef(Date.now());
-  const timeoutId = useRef(null); // To reset velocity when mouse stops
+  const timeoutId = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       const now = Date.now();
-      const dt = Math.max(now - lastTimestamp.current, 1); // prevent division by zero
+      const dt = Math.max(now - lastTimestamp.current, 1);
 
-      const newX = e.clientX;
-      const newY = e.clientY;
+      const clientX = e.clientX;
+      const clientY = e.clientY;
 
-      const dx = newX - prevMousePos.current.x;
-      const dy = newY - prevMousePos.current.y;
-
-      mousePos.current = { x: newX, y: newY };
+      // Velocity is calculated from viewport coordinates to ignore scroll
+      const dx = clientX - prevClientMousePos.current.x;
+      const dy = clientY - prevClientMousePos.current.y;
       mouseVel.current = { x: dx / dt, y: dy / dt };
-      prevMousePos.current = { x: newX, y: newY };
+
+      // Position is stored in document coordinates for accurate interaction
+      mousePos.current = { x: clientX, y: clientY + window.scrollY };
+
+      prevClientMousePos.current = { x: clientX, y: clientY };
       lastTimestamp.current = now;
 
-      // Clear previous timeout
       if (timeoutId.current) {
         clearTimeout(timeoutId.current);
       }
-
-      // Set a new timeout to reset velocity if mouse doesn't move
       timeoutId.current = setTimeout(() => {
         mouseVel.current = { x: 0, y: 0 };
-      }, 50); // A short delay like 50ms should be enough
+      }, 50);
     };
 
     const handleMouseLeave = () => {
@@ -59,11 +59,11 @@ const useMouse = () => {
   return { mousePos, mouseVel };
 };
 
-const Leaf = ({ mouse }) => {
+const Leaf = ({ mouse, pageHeight }) => {
   const x = useMotionValue(Math.random() * window.innerWidth);
   const y = useMotionValue(Math.random() * -window.innerHeight - 50);
   const size = useRef(Math.random() * 20 + 20);
-  const mass = useRef(size.current * 0.1); // Larger leaves are heavier
+  const mass = useRef(size.current * 0.1);
   const velocity = useRef({ x: Math.random() * 2 - 1, y: Math.random() * 0.5 + 0.5 });
   const rotation = useMotionValue(Math.random() * 360);
   const rotationSpeed = useRef(Math.random() * 2 - 1);
@@ -78,34 +78,30 @@ const Leaf = ({ mouse }) => {
     let animationFrame;
 
     const update = () => {
-      // Apply gravity
-      velocity.current.y += 0.01;
+      velocity.current.y += 0.01; // Gravity
 
-      // Wind from mouse
       const { mousePos, mouseVel } = mouse;
       const dx = x.get() - mousePos.current.x;
       const dy = y.get() - mousePos.current.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (dist < 150) { // Interaction radius
+      if (dist < 150) {
         const force = 1 - dist / 150;
-        const windStrength = 0.8; // How much the mouse "blows" the leaves
+        const windStrength = 0.8;
         velocity.current.x += mouseVel.current.x * force * windStrength;
         velocity.current.y += mouseVel.current.y * force * windStrength;
       }
 
-      // Air resistance / damping
-      velocity.current.x *= 0.96;
+      velocity.current.x *= 0.96; // Damping
       velocity.current.y *= 0.96;
 
-      // Update position
       x.set(x.get() + velocity.current.x);
       y.set(y.get() + velocity.current.y);
       rotation.set(rotation.get() + rotationSpeed.current);
 
-      // Reset leaf if it goes off-screen
-      if (y.get() > window.innerHeight + 50) {
-        y.set(Math.random() * -100 - 50);
+      const bottomBoundary = pageHeight > 0 ? pageHeight : window.innerHeight;
+      if (y.get() > bottomBoundary + 50) {
+        y.set(Math.random() * -200 - 50); // Reset to top of document
         x.set(Math.random() * window.innerWidth);
         velocity.current = { x: Math.random() * 2 - 1, y: Math.random() * 0.5 + 0.5 };
       }
@@ -120,7 +116,7 @@ const Leaf = ({ mouse }) => {
 
     animationFrame = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationFrame);
-  }, [x, y, rotation, mouse]);
+  }, [x, y, rotation, mouse, pageHeight]);
 
   return (
     <motion.img
@@ -142,10 +138,35 @@ const Leaf = ({ mouse }) => {
 
 const FallingLeaves = ({ count = 25 }) => {
   const mouse = useMouse();
-  const leaves = React.useMemo(() => Array.from({ length: count }, (_, i) => <Leaf key={i} mouse={mouse} />), [count, mouse]);
+  const [pageHeight, setPageHeight] = useState(0);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      setPageHeight(document.documentElement.scrollHeight);
+    };
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
+  const leaves = React.useMemo(() => (
+    Array.from({ length: count }, (_, i) => <Leaf key={i} mouse={mouse} pageHeight={pageHeight} />)
+  ), [count, mouse, pageHeight]);
 
   return (
-    <div className="leaves-container" style={{ pointerEvents: 'none' }}>
+    <div
+      className="leaves-container"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: pageHeight > 0 ? `${pageHeight}px` : '100vh',
+        pointerEvents: 'none',
+        overflow: 'hidden',
+        zIndex: 1,
+      }}
+    >
       {leaves}
     </div>
   );

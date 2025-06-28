@@ -39,14 +39,14 @@ const About = () => {
 
         {/* Introduction Section */}
         <motion.div 
-          className="row"
+          className="row about-intro-row"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
         >
           {/* Profile Content */}
-          <motion.div className="col-md-8" variants={fadeIn}>
+          <motion.div className="col-md-7" variants={fadeIn}>
             <div className="about-me">
               <h2>A Researcher and Inventor at the Intersection of Biology, Hardware, and Design.</h2>
               <p>
@@ -67,7 +67,7 @@ const About = () => {
           </motion.div>
           
           {/* Profile Image */}
-          <motion.div className="col-md-4" variants={fadeIn}>
+          <motion.div className="col-md-5" variants={fadeIn}>
             <div className="author">
               <img 
                 src="/img/pfp.png" 
