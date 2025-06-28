@@ -53,11 +53,11 @@ const Resume = () => {
           <motion.div className="col-md-4" variants={fadeIn}>
             <div className="single-service">
               <span className="glow-icon"><i className="fa fa-heartbeat"></i></span>
-              <h3>Interactive Biosensing</h3>
+              <h3>ML + Interactive Biosensing</h3>
               <p>
                 I pioneer novel biosensors for both humans and animals, integrating electrochemical and colorimetric
-                sensing into everyday objects. My work in Animal-Computer Interaction and wearable technology 
-                translates subtle biological signals into actionable health insights.
+                sensing into everyday objects. My work uses machine learning to translate subtle biological signals 
+                from wearable tech and ACI into actionable health insights.
               </p>
             </div>
           </motion.div>
