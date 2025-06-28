@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/sunshuyi/static/css/main.bdbb22fa.css",
+    "main.js": "/sunshuyi/static/js/main.44a05389.js",
+    "index.html": "/sunshuyi/index.html",
+    "main.bdbb22fa.css.map": "/sunshuyi/static/css/main.bdbb22fa.css.map",
+    "main.44a05389.js.map": "/sunshuyi/static/js/main.44a05389.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bdbb22fa.css",
+    "static/js/main.44a05389.js"
+  ]
+}
