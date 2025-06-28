@@ -1,102 +1,117 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+
+// Animation variants for fading in elements
+const fadeIn = {
+  hidden: { opacity: 0, y: 20, filter: 'blur(5px)' },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.8,
+      ease: [0.6, -0.05, 0.01, 0.99]
+    }
+  }
+};
+
+// Container for staggered animations
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
 
 const Resume = () => {
   return (
     <div id="service" className="section-padding">
       <div className="container">
-        {/* Resume Link Section */}
-        <div className="row">
+        {/* Section Header */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={fadeIn}
+        >
+          <div className="section-head">
+            <h3>Core Expertise</h3>
+          </div>
+        </motion.div>
+
+        {/* Expertise Cards */}
+        <motion.div 
+          className="row"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerContainer}
+        >
+          {/* Interactive Biosensing */}
+          <motion.div className="col-md-4" variants={fadeIn}>
+            <div className="single-service">
+              <span className="glow-icon"><i className="fa fa-heartbeat"></i></span>
+              <h3>Interactive Biosensing</h3>
+              <p>
+                I pioneer novel biosensors for both humans and animals, integrating electrochemical and colorimetric
+                sensing into everyday objects. My work in Animal-Computer Interaction and wearable technology 
+                translates subtle biological signals into actionable health insights.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Creative Technology & Prototyping */}
+          <motion.div className="col-md-4" variants={fadeIn}>
+            <div className="single-service">
+              <span className="glow-icon"><i className="fa fa-magic"></i></span>
+              <h3>Creative Tech & Prototyping</h3>
+              <p>
+                Bridging the gap between art and engineering, I bring concepts to life through rapid prototyping. 
+                My skills span hardware design, 3D modeling, and embedded systems to create beautiful, functional, 
+                and user-centered interactive devices.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Full-Stack & Data Science */}
+          <motion.div className="col-md-4" variants={fadeIn}>
+            <div className="single-service">
+              <span className="glow-icon"><i className="fa fa-code"></i></span>
+              <h3>Full-Stack & Data Science</h3>
+              <p>
+                I build robust, end-to-end systems to power my research. This includes architecting IoT platforms,
+                developing data visualization dashboards, and applying machine learning to extract meaningful 
+                patterns from complex, multi-modal data streams.
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Resume Link Section - Simplified and Animated */}
+        <motion.div
+          className="row"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={fadeIn}
+        >
           <div className="col-md-12">
-            <div className="section-head">
-              <h3>Resume</h3>
-              <div className="single-service">
-                <span>
-                  <a 
-                    href="documents/resume.html" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    aria-label="View Resume"
-                  >
-                    <i className="fa fa-id-card"></i>
-                  </a>
-                </span>
-              </div>
+            <div className="resume-cta">
+              <h4>Want the formal version?</h4>
+              <a 
+                href="documents/resume.html" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn-primary"
+                aria-label="View Full Resume"
+              >
+                View Full Resume
+              </a>
             </div>
           </div>
-        </div>
-
-        {/* Skills and Experiences Section */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="section-head">
-              <h3>Skills and Experiences</h3>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          {/* Research Skills */}
-          <div className="col-md-4">
-            <div className="single-service">
-              <span><i className="fa fa-area-chart"></i></span>
-              <h3>Research</h3>
-              <p>
-                I have been involved in various forms of research in the fields of Computer Science.
-              </p>
-              <p>
-                From my involvement with the Facilitating Interactions for Dogs with Occupations lab, 
-                I designed and developed an experimental device for measuring aspects of dog temperament. 
-                In addition to programming, this process required hardware skills such as 3D printing and modeling, 
-                silicone casting, and circuitry. An extended abstract was published in the 2018 international 
-                conference on Animal-Computer Interaction, titled "Technology for working dogs."
-              </p>
-              <p>
-                I also involved myself in research for computational making the HCI classrooms, using skills 
-                such as analyzing qualitative data and interviews, as well as coding and quantifying these information.
-              </p>
-            </div>
-          </div>
-
-          {/* Arts and Design Skills */}
-          <div className="col-md-4">
-            <div className="single-service">
-              <span><i className="fa fa-paint-brush"></i></span>
-              <h3>Arts and Design</h3>
-              <p>
-                I have been drawing, painting, and designing since the age of three.
-              </p>
-              <p>
-                Throughout the years, I have won many awards, sold my art works, and had my work displayed. 
-                With my abilities in traditional art, Adobe Creative Studio, and Autodesk, I greatly enjoy 
-                finding ways to incorporate this passion into my technological, STEM focused major.
-              </p>
-              <p>
-                Aside from my personal projects, I also designed the icon and posters for the Fifth 
-                International Conference on Animal-Computer Interaction.
-              </p>
-            </div>
-          </div>
-
-          {/* Development Skills */}
-          <div className="col-md-4">
-            <div className="single-service">
-              <span><i className="fa fa-file-code-o"></i></span>
-              <h3>Developing</h3>
-              <p>
-                As my degree is in Computer Science, I have done many programming projects.
-              </p>
-              <p>
-                I work with various programming languages and frameworks including JavaScript, React, 
-                Python, Java, and more. I enjoy creating both web applications and desktop software, 
-                always focusing on clean code and user experience.
-              </p>
-              <p>
-                My development work spans from research applications to creative projects, combining 
-                my technical skills with my design background to create meaningful digital experiences.
-              </p>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
