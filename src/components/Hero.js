@@ -177,11 +177,15 @@ const Hero = () => {
     // Special styling for the name with extra animation delay
     fontWeight: 800,
     background: isCatTheme 
-      ? 'linear-gradient(135deg, #ff69b4 0%, #ff1493 100%)'
+      ? 'linear-gradient(135deg, #d63384 0%, #f8d7da 30%, #d63384 100%)'
       : 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)',
+    
+    // Proper text masking for gradient effect - with all browser prefixes
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
+    color: 'transparent', // Fallback for browsers that don't support background-clip
+    
     display: 'inline-block',
     
     // Delayed animation for the name to pop in after title
@@ -190,6 +194,10 @@ const Hero = () => {
       : 'scale(0.8) translateY(5px)',
     opacity: animationPhase >= 2 ? 1 : 0.3,
     transition: 'all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2)',
+    
+    // Ensure the gradient stays attached to the text
+    backgroundAttachment: 'local',
+    backgroundSize: 'cover',
   };
 
   const heroSubtitleStyle = {
