@@ -98,9 +98,8 @@ const Hero = () => {
   };
 
   const pawIconStyle = {
-    width: '32px',
-    height: '32px',
-    fill: isCatTheme ? '#ff69b4' : '#2d5a2d',
+    fontSize: '28px',
+    color: isCatTheme ? '#ff69b4' : '#2d5a2d',
     transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     transform: pawButtonHovered ? 'rotate(15deg) scale(1.1)' : 'rotate(0deg) scale(1)',
     filter: pawButtonHovered ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' : 'none',
@@ -176,16 +175,10 @@ const Hero = () => {
   const heroNameStyle = {
     // Special styling for the name with extra animation delay
     fontWeight: 800,
-    background: isCatTheme 
-      ? 'linear-gradient(135deg, #d63384 0%, #f8d7da 30%, #d63384 100%)'
-      : 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)',
-    
-    // Proper text masking for gradient effect - with all browser prefixes
+    background: 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
-    color: 'transparent', // Fallback for browsers that don't support background-clip
-    
     display: 'inline-block',
     
     // Delayed animation for the name to pop in after title
@@ -193,11 +186,7 @@ const Hero = () => {
       ? 'scale(1) translateY(0)' 
       : 'scale(0.8) translateY(5px)',
     opacity: animationPhase >= 2 ? 1 : 0.3,
-    transition: 'all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2)',
-    
-    // Ensure the gradient stays attached to the text
-    backgroundAttachment: 'local',
-    backgroundSize: 'cover',
+    transition: 'transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2)',
   };
 
   const heroSubtitleStyle = {
@@ -453,10 +442,8 @@ const Hero = () => {
         aria-label={`Switch to ${isCatTheme ? 'nature' : 'cat'} theme`}
         title={`Currently: ${currentConfig.name}. Click to switch!`}
       >
-        {/* Beautiful SVG paw print icon */}
-        <svg viewBox="0 0 24 24" style={pawIconStyle}>
-          <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9C21.6 9 22 9.4 22 10C22 10.6 21.6 11 21 11C20.4 11 20 10.6 20 10C20 9.4 20.4 9 21 9ZM3 9C3.6 9 4 9.4 4 10C4 10.6 3.6 11 3 11C2.4 11 2 10.6 2 10C2 9.4 2.4 9 3 9ZM19 14C19.6 14 20 14.4 20 15C20 15.6 19.6 16 19 16C18.4 16 18 15.6 18 15C18 14.4 18.4 14 19 14ZM5 14C5.6 14 6 14.4 6 15C6 15.6 5.6 16 5 16C4.4 16 4 15.6 4 15C4 14.4 4.4 14 5 14ZM17 18C17 19.1 16.1 20 15 20H9C7.9 20 7 19.1 7 18C7 17.4 7.2 16.8 7.6 16.4L10.6 13.4C11.4 12.6 12.6 12.6 13.4 13.4L16.4 16.4C16.8 16.8 17 17.4 17 18Z"/>
-        </svg>
+        {/* Beautiful Font Awesome paw print icon */}
+        <i className="fa fa-paw" style={pawIconStyle}></i>
       </button>
     </div>
   );
