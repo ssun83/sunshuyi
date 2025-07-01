@@ -16,67 +16,75 @@ const Portfolio = () => {
   const portfolioItems = [
     {
       id: 1,
-      image: `${process.env.PUBLIC_URL}/img/projects/project1.png`,
-      title: "Advanced Analytics Platform",
-      description: "A comprehensive data visualization platform built with modern web technologies, featuring real-time analytics and interactive dashboards.",
-      tech: ["React", "D3.js", "Node.js", "PostgreSQL"],
-      category: "Web Application"
+      image: `${process.env.PUBLIC_URL}/img/projects/biocosme.png`,
+      title: "BioCosMe: Lip-based Biosensors",
+      description: "Lip-based cosmetics with colorimetric biosensors for salivary analysis using deep learning. Features CNN model for pH detection through color variation with mobile app integration.",
+      tech: ["React Native", "TensorFlow", "CNN", "Colorimetric Sensors", "Deep Learning"],
+      category: "Beauty Technology"
     },
     {
       id: 2,
-      image: `${process.env.PUBLIC_URL}/img/projects/project2.png`,
-      title: "Mobile Fitness Companion",
-      description: "Cross-platform mobile application for fitness tracking with AI-powered workout recommendations and social features.",
-      tech: ["React Native", "Firebase", "TensorFlow", "Redux"],
-      category: "Mobile App"
+      image: `${process.env.PUBLIC_URL}/img/projects/chromalipsense.png`,
+      title: "ChromaLipSense: Metabolic Monitoring Lipstick",
+      description: "Innovative lipstick design that seamlessly embeds colorimetric biosensors for pH detection. Features DIY fabrication process using skin-safe materials and color detection system.",
+      tech: ["Biosensors", "DIY Fabrication", "Colorimetric Analysis", "Mobile App"],
+      category: "Biosensors"
     },
     {
       id: 3,
-      image: `${process.env.PUBLIC_URL}/img/projects/project3.png`,
-      title: "E-Commerce Redesign",
-      description: "Complete UX/UI overhaul of an enterprise e-commerce platform, focusing on conversion optimization and user experience.",
-      tech: ["Figma", "React", "Stripe API", "AWS"],
-      category: "UX/UI Design"
+      image: `${process.env.PUBLIC_URL}/img/projects/pawh.png`,
+      title: "pawH: Pet Health Monitoring Toys",
+      description: "Colorimetric pH-sensing toys for non-invasive pet health monitoring. Uses pets' natural play behaviors to analyze saliva pH through color changes with spectrometer analysis.",
+      tech: ["Colorimetric Sensors", "Spectrometer", "Mobile App", "Pet-Safe Materials"],
+      category: "Animal-Computer Interaction"
     },
     {
       id: 4,
-      image: `${process.env.PUBLIC_URL}/img/projects/project4.png`,
-      title: "AI Content Generator",
-      description: "Intelligent content creation tool leveraging machine learning to generate high-quality written content for various industries.",
-      tech: ["Python", "OpenAI API", "FastAPI", "Docker"],
-      category: "AI/ML"
+      image: `${process.env.PUBLIC_URL}/img/projects/glucat.png`,
+      title: "GluCAT: Feline Glucose Monitoring",
+      description: "IoT hub for electrochemical glucose biosensing in feline urine. Features biosensing litter box with potentiostat and Wi-Fi connectivity for comprehensive diabetes monitoring.",
+      tech: ["Electrochemical Biosensors", "IoT", "Wi-Fi", "Potentiostat", "Database"],
+      category: "IoT/Smart Home"
     },
     {
       id: 5,
-      image: `${process.env.PUBLIC_URL}/img/projects/project5.png`,
-      title: "Blockchain Voting System",
-      description: "Secure, transparent voting platform built on blockchain technology ensuring election integrity and voter privacy.",
-      tech: ["Solidity", "Web3.js", "Ethereum", "IPFS"],
-      category: "Blockchain"
+      image: `${process.env.PUBLIC_URL}/img/projects/circat.png`,
+      title: "cirCAT: Smart Home for Cats",
+      description: "Comprehensive smart home system designed for cats and caregivers. Integrates smart devices like litter boxes, scales, feeders for holistic health monitoring and early detection.",
+      tech: ["IoT Devices", "Smart Sensors", "Data Visualization", "Mobile App"],
+      category: "Animal-Computer Interaction"
     },
     {
       id: 6,
-      image: `${process.env.PUBLIC_URL}/img/projects/project6.png`,
-      title: "Smart Home IoT Dashboard",
-      description: "Unified control center for IoT devices with energy monitoring, automation rules, and predictive maintenance.",
-      tech: ["Vue.js", "MQTT", "InfluxDB", "Grafana"],
-      category: "IoT"
+      image: `${process.env.PUBLIC_URL}/img/projects/purrtentio.png`,
+      title: "PURRtentio: Smart Litter Box",
+      description: "Electrochemical biosensor-equipped litter box for continuous monitoring of analytes in feline urine. Features DIY three-electrode biosensor with rinsing mechanism for extended sensor life.",
+      tech: ["Electrochemical Biosensors", "Microcontroller", "ToF Sensor", "Mobile App"],
+      category: "Biosensors"
     },
     {
       id: 7,
-      image: `${process.env.PUBLIC_URL}/img/projects/project7.png`,
-      title: "Educational VR Experience",
-      description: "Immersive virtual reality application for educational institutions, transforming traditional learning into interactive experiences.",
-      tech: ["Unity", "C#", "Oculus SDK", "Blender"],
-      category: "VR/AR"
+      image: `${process.env.PUBLIC_URL}/img/projects/biosparks.png`,
+      title: "BioSparks: Biosensor Jewelry",
+      description: "Electrochemical sweat biosensors crafted with traditional jewelry techniques. Features modular, repurposing design with interchangeable electrodes for glucose level detection.",
+      tech: ["Electrochemical Biosensors", "Wearable Design", "Jewelry Techniques", "Glucose Detection"],
+      category: "Wearable Technology"
     },
     {
       id: 8,
-      image: `${process.env.PUBLIC_URL}/img/projects/project8.png`,
-      title: "Financial Trading Bot",
-      description: "Automated trading system with advanced algorithms for cryptocurrency markets, featuring risk management and portfolio optimization.",
-      tech: ["Python", "TensorFlow", "Binance API", "Redis"],
-      category: "FinTech"
+      image: `${process.env.PUBLIC_URL}/img/projects/wooflex.png`,
+      title: "WOOFlex: Canine Exercise Aid",
+      description: "Wearable device to aid canine flexibility exercises with IMU sensors for joint angle measurement. Provides real-time visual and audio feedback for safe exercise ranges.",
+      tech: ["IMU Sensors", "Web Application", "Real-time Feedback", "Wearable Design"],
+      category: "Animal-Computer Interaction"
+    },
+    {
+      id: 9,
+      image: `${process.env.PUBLIC_URL}/img/projects/gemini.png`,
+      title: "GemiN' I: Seamless Skin Interfaces",
+      description: "Beauty Technology that embeds sensors in facial gems to detect facial muscle movements, enabling discrete communication with smart home devices through unconscious behaviors like frowning.",
+      tech: ["Facial Sensors", "Smart Home Integration", "Beauty Technology", "Gesture Recognition"],
+      category: "Beauty Technology"
     }
   ];
 
