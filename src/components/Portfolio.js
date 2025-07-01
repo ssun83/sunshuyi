@@ -20,7 +20,8 @@ const Portfolio = () => {
       title: "BioCosMe: Lip-based Biosensors",
       description: "Lip-based cosmetics with colorimetric biosensors for salivary analysis using deep learning. Features CNN model for pH detection through color variation with mobile app integration.",
       tech: ["React Native", "TensorFlow", "CNN", "Colorimetric Sensors", "Deep Learning"],
-      category: "Beauty Technology"
+      category: "Beauty Technology",
+      doi: "https://doi.org/10.1145/3675095.3676610"
     },
     {
       id: 2,
@@ -28,7 +29,8 @@ const Portfolio = () => {
       title: "ChromaLipSense: Metabolic Monitoring Lipstick",
       description: "Innovative lipstick design that seamlessly embeds colorimetric biosensors for pH detection. Features DIY fabrication process using skin-safe materials and color detection system.",
       tech: ["Biosensors", "DIY Fabrication", "Colorimetric Analysis", "Mobile App"],
-      category: "Biosensors"
+      category: "Biosensors",
+      doi: "https://doi.org/10.1080/14606925.2025.2516592"
     },
     {
       id: 3,
@@ -36,7 +38,8 @@ const Portfolio = () => {
       title: "pawH: Pet Health Monitoring Toys",
       description: "Colorimetric pH-sensing toys for non-invasive pet health monitoring. Uses pets' natural play behaviors to analyze saliva pH through color changes with spectrometer analysis.",
       tech: ["Colorimetric Sensors", "Spectrometer", "Mobile App", "Pet-Safe Materials"],
-      category: "Animal-Computer Interaction"
+      category: "Animal-Computer Interaction",
+      doi: "https://doi.org/10.1145/3715336.3735768"
     },
     {
       id: 4,
@@ -44,7 +47,8 @@ const Portfolio = () => {
       title: "GluCAT: Feline Glucose Monitoring",
       description: "IoT hub for electrochemical glucose biosensing in feline urine. Features biosensing litter box with potentiostat and Wi-Fi connectivity for comprehensive diabetes monitoring.",
       tech: ["Electrochemical Biosensors", "IoT", "Wi-Fi", "Potentiostat", "Database"],
-      category: "IoT/Smart Home"
+      category: "IoT/Smart Home",
+      doi: "https://doi.org/10.1145/3623509.3635250"
     },
     {
       id: 5,
@@ -52,7 +56,8 @@ const Portfolio = () => {
       title: "cirCAT: Smart Home for Cats",
       description: "Comprehensive smart home system designed for cats and caregivers. Integrates smart devices like litter boxes, scales, feeders for holistic health monitoring and early detection.",
       tech: ["IoT Devices", "Smart Sensors", "Data Visualization", "Mobile App"],
-      category: "Animal-Computer Interaction"
+      category: "Animal-Computer Interaction",
+      doi: "https://doi.org/10.1145/3637882.3637901"
     },
     {
       id: 6,
@@ -60,7 +65,8 @@ const Portfolio = () => {
       title: "PURRtentio: Smart Litter Box",
       description: "Electrochemical biosensor-equipped litter box for continuous monitoring of analytes in feline urine. Features DIY three-electrode biosensor with rinsing mechanism for extended sensor life.",
       tech: ["Electrochemical Biosensors", "Microcontroller", "ToF Sensor", "Mobile App"],
-      category: "Biosensors"
+      category: "Biosensors",
+      doi: "https://doi.org/10.1145/3637882.3637887"
     },
     {
       id: 7,
@@ -68,7 +74,8 @@ const Portfolio = () => {
       title: "BioSparks: Biosensor Jewelry",
       description: "Electrochemical sweat biosensors crafted with traditional jewelry techniques. Features modular, repurposing design with interchangeable electrodes for glucose level detection.",
       tech: ["Electrochemical Biosensors", "Wearable Design", "Jewelry Techniques", "Glucose Detection"],
-      category: "Wearable Technology"
+      category: "Wearable Technology",
+      doi: "https://doi.org/10.1145/3594739.3610787"
     },
     {
       id: 8,
@@ -76,7 +83,8 @@ const Portfolio = () => {
       title: "WOOFlex: Canine Exercise Aid",
       description: "Wearable device to aid canine flexibility exercises with IMU sensors for joint angle measurement. Provides real-time visual and audio feedback for safe exercise ranges.",
       tech: ["IMU Sensors", "Web Application", "Real-time Feedback", "Wearable Design"],
-      category: "Animal-Computer Interaction"
+      category: "Animal-Computer Interaction",
+      doi: "https://doi.org/10.1145/3493842.3493903"
     },
     {
       id: 9,
@@ -84,7 +92,8 @@ const Portfolio = () => {
       title: "GemiN' I: Seamless Skin Interfaces",
       description: "Beauty Technology that embeds sensors in facial gems to detect facial muscle movements, enabling discrete communication with smart home devices through unconscious behaviors like frowning.",
       tech: ["Facial Sensors", "Smart Home Integration", "Beauty Technology", "Gesture Recognition"],
-      category: "Beauty Technology"
+      category: "Beauty Technology",
+      doi: "https://doi.org/10.1145/3458709.3458997"
     }
   ];
 
@@ -336,8 +345,12 @@ const Portfolio = () => {
                 </div>
                 
                 <div className="modal-actions">
-                  <button className="btn-primary">View Live Project</button>
-                  <button className="btn-secondary">View Source Code</button>
+                  <button 
+                    className="btn-primary"
+                    onClick={() => window.open(selectedProject.doi, '_blank')}
+                  >
+                    View Paper
+                  </button>
                 </div>
               </div>
             </div>
