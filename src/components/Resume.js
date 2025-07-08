@@ -106,6 +106,12 @@ const Resume = () => {
                 rel="noopener noreferrer"
                 className="btn-primary"
                 aria-label="View Full Resume"
+                style={{
+                    padding: '28px 56px',
+                    borderRadius: '20px',
+                    fontWeight: '600',
+                    fontSize: '1.4rem'
+                }}
               >
                 View Full Resume
               </a>
