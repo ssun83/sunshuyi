@@ -42,7 +42,9 @@ export const ThemeProvider = ({ children }) => {
       background: 'img/cat.jpg',
       fallInObjects: [
         'img/paws/paw1.png',
-        'img/paws/paw2.png'
+        'img/paws/paw2.png',
+        'img/paws/paw3.png',
+        'img/paws/paw4.png'
       ],
       name: 'Cat Theme'
     }
