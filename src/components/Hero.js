@@ -51,8 +51,8 @@ const Hero = () => {
     backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
     
-    // Smooth background transition when switching themes
-    transition: 'background 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+    // // Smooth background transition when switching themes
+    // transition: 'background 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
   };
 
   // Paw Print Button Styles - The star of the show!
