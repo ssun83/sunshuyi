@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/sunshuyi/static/css/main.bdbb22fa.css",
-    "main.js": "/sunshuyi/static/js/main.ae33f187.js",
+    "main.js": "/sunshuyi/static/js/main.d27afb6a.js",
     "index.html": "/sunshuyi/index.html",
     "main.bdbb22fa.css.map": "/sunshuyi/static/css/main.bdbb22fa.css.map",
-    "main.ae33f187.js.map": "/sunshuyi/static/js/main.ae33f187.js.map"
+    "main.d27afb6a.js.map": "/sunshuyi/static/js/main.d27afb6a.js.map"
   },
   "entrypoints": [
     "static/css/main.bdbb22fa.css",
-    "static/js/main.ae33f187.js"
+    "static/js/main.d27afb6a.js"
   ]
 }
