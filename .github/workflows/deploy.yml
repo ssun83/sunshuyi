@@ -36,5 +36,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages  # The branch the action should deploy to
-          folder: dist      # The folder the action should deploy
+          folder: build     # Changed from 'dist' to 'build' - React builds to 'build' folder
           clean: true       # Automatically remove deleted files from the deployment 
