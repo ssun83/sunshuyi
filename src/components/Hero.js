@@ -41,18 +41,11 @@ const Hero = () => {
     position: 'relative',
     overflow: 'hidden',
     
-    // Dynamic background switching with smooth transitions
-    background: `
-      linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
-      url('${process.env.PUBLIC_URL}/${currentConfig.background}')
-    `,
+    // Dynamic background switching - instant change, no animation
+    backgroundImage: `url('${process.env.PUBLIC_URL}/${currentConfig.background}')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
-    backgroundAttachment: 'fixed',
-    
-    // Smooth background transition when switching themes
-    transition: 'background 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
   };
 
   // Paw Print Button Styles - The star of the show!
@@ -298,7 +291,7 @@ const Hero = () => {
 
   return (
     <div id="top" style={heroContainerStyle}>
-      {/* Background blur overlay for bokeh effect */}
+      {/* Gradient overlay - separate from background for consistent sizing */}
       <div 
         style={{
           position: 'absolute',
@@ -306,13 +299,9 @@ const Hero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: `url('${process.env.PUBLIC_URL}/${currentConfig.background}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: theme.colors.glass.blur.heavy,
-          opacity: 0.2,
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
           zIndex: 1,
-          transition: 'all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Smooth background transition
+          pointerEvents: 'none',
         }}
       />
       
