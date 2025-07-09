@@ -113,6 +113,11 @@ const Hero = () => {
     position: 'relative',
     zIndex: 2,
     padding: `${theme.spacing[32]} ${theme.spacing[16]}`,
+    
+    // Mobile responsive adjustments
+    '@media (max-width: 480px)': {
+      padding: `${theme.spacing[24]} ${theme.spacing[12]}`,
+    },
   };
 
   const heroGlassCardStyle = {
@@ -140,6 +145,18 @@ const Hero = () => {
         : 'translateY(40px) scale(0.95)',
       boxShadow: theme.shadows.heavy,
     },
+    
+    // Mobile responsive adjustments
+    '@media (max-width: 768px)': {
+      padding: `${theme.spacing[40]} ${theme.spacing[24]}`,
+      maxWidth: '90%',
+    },
+    '@media (max-width: 480px)': {
+      padding: `${theme.spacing[32]} ${theme.spacing[20]}`,
+      maxWidth: '95%',
+      // Ensure adequate spacing for PhD icon
+      paddingBottom: theme.spacing[64],
+    },
   };
 
   const heroTitleStyle = {
@@ -156,12 +173,20 @@ const Hero = () => {
     opacity: animationPhase >= 1 ? 1 : 0,
     transition: 'all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     
-    // Responsive scaling
+    // Responsive scaling with better mobile handling
     '@media (max-width: 768px)': {
       fontSize: '36px',
+      lineHeight: '1.2',
+      marginBottom: theme.spacing[20],
     },
     '@media (max-width: 480px)': {
       fontSize: '28px',
+      lineHeight: '1.3',
+      marginBottom: theme.spacing[16],
+      // Ensure text doesn't get cut off
+      wordBreak: 'keep-all',
+      whiteSpace: 'nowrap',
+      overflow: 'visible',
     },
   };
 
@@ -180,6 +205,15 @@ const Hero = () => {
       : 'scale(0.8) translateY(5px)',
     opacity: animationPhase >= 2 ? 1 : 0.3,
     transition: 'transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.2)',
+    
+    // Mobile responsive adjustments to prevent cut-off
+    '@media (max-width: 480px)': {
+      // Ensure the name doesn't get cut off on small screens
+      fontSize: 'inherit',
+      lineHeight: 'inherit',
+      wordBreak: 'keep-all',
+      whiteSpace: 'nowrap',
+    },
   };
 
   const heroSubtitleStyle = {
@@ -200,9 +234,12 @@ const Hero = () => {
     // Responsive scaling
     '@media (max-width: 768px)': {
       fontSize: '22px',
+      marginBottom: theme.spacing[24],
     },
     '@media (max-width: 480px)': {
       fontSize: '18px',
+      marginBottom: theme.spacing[20],
+      lineHeight: '1.4',
     },
   };
 
@@ -221,6 +258,12 @@ const Hero = () => {
       : 'translateY(30px)',
     opacity: animationPhase >= 3 ? 1 : 0,
     transition: 'all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.15)',
+    
+    // Mobile responsive adjustments
+    '@media (max-width: 480px)': {
+      gap: theme.spacing[12],
+      marginBottom: theme.spacing[16],
+    },
   };
 
   const socialItemStyle = {
@@ -270,9 +313,16 @@ const Hero = () => {
     '&:active': {
       transform: 'translateY(0) scale(1.05)',
     },
+    
+    // Mobile responsive adjustments
+    '@media (max-width: 480px)': {
+      width: '50px',
+      height: '50px',
+      fontSize: '20px',
+    },
   };
 
-  // PhD Icon with subtle bounce animation
+  // PhD Icon with subtle bounce animation - Enhanced mobile spacing
   const phdIconStyle = {
     position: 'absolute',
     bottom: theme.spacing[24],
@@ -287,6 +337,20 @@ const Hero = () => {
       ? 'scale(1) translateY(0)' 
       : 'scale(0.5) translateY(15px)',
     transition: 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.6)',
+    
+    // Mobile-specific spacing and sizing
+    '@media (max-width: 768px)': {
+      bottom: theme.spacing[32], // More spacing on mobile
+      left: theme.spacing[32],
+      width: '40px',
+      height: '40px',
+    },
+    '@media (max-width: 480px)': {
+      bottom: theme.spacing[40], // Even more spacing on small mobile
+      left: theme.spacing[24],
+      width: '36px',
+      height: '36px',
+    },
   };
 
   return (
@@ -305,14 +369,14 @@ const Hero = () => {
         }}
       />
       
-      <div style={heroContentWrapperStyle}>
+      <div style={heroContentWrapperStyle} className="hero-content-wrapper">
         {/* Frosted glass content card */}
-        <div style={{...heroGlassCardStyle, position: 'relative'}}>
-          <h1 style={heroTitleStyle}>
-            I am <span style={heroNameStyle}>Shuyi Sun</span>
+        <div style={{...heroGlassCardStyle, position: 'relative'}} className="hero-glass-card">
+          <h1 style={heroTitleStyle} className="hero-title">
+            I am <span style={heroNameStyle} className="hero-name">Shuyi Sun</span>
           </h1>
           
-          <p style={heroSubtitleStyle}>
+          <p style={heroSubtitleStyle} className="hero-subtitle">
             Researcher, Designer, Developer
           </p>
           
@@ -321,6 +385,7 @@ const Hero = () => {
             src={`${process.env.PUBLIC_URL}/img/phd-icon.png`}
             alt="PhD Icon"
             style={phdIconStyle}
+            className="phd-icon"
             onMouseEnter={(e) => {
               e.target.style.opacity = '1';
               e.target.style.transform = 'scale(1.1)';
@@ -332,7 +397,7 @@ const Hero = () => {
           />
           
           {/* Social media links with glass effects */}
-          <ul style={socialContainerStyle}>
+          <ul style={socialContainerStyle} className="hero-social-container">
             <li style={socialItemStyle}>
               <a 
                 href="https://instagram.com/zeusspade" 
@@ -340,6 +405,7 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 aria-label="Instagram Profile"
                 style={socialLinkStyle}
+                className="hero-social-link"
                 onMouseEnter={(e) => {
                   e.target.style.background = theme.colors.light.primary;
                   e.target.style.color = '#ffffff';
@@ -361,6 +427,7 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 aria-label="GitHub Profile"
                 style={socialLinkStyle}
+                className="hero-social-link"
                 onMouseEnter={(e) => {
                   e.target.style.background = theme.colors.light.primary;
                   e.target.style.color = '#ffffff';
@@ -382,6 +449,7 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Profile"
                 style={socialLinkStyle}
+                className="hero-social-link"
                 onMouseEnter={(e) => {
                   e.target.style.background = theme.colors.light.primary;
                   e.target.style.color = '#ffffff';
@@ -402,6 +470,7 @@ const Hero = () => {
                 target="_top"
                 aria-label="Send Email"
                 style={socialLinkStyle}
+                className="hero-social-link"
                 onMouseEnter={(e) => {
                   e.target.style.background = theme.colors.light.primary;
                   e.target.style.color = '#ffffff';
