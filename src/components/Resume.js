@@ -101,7 +101,7 @@ const Resume = () => {
             <div className="resume-cta">
               <h4>Want the formal version?</h4>
               <a 
-                href={`${process.env.PUBLIC_URL}/documents/dr_shuyi_sun_phd_9-14-25_resume+cv.pdf`}
+                href={`${process.env.PUBLIC_URL}/documents/dr_shuyi_sun_phd_3-14-26_resume+cv.pdf`}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-primary"
